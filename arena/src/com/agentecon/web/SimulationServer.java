@@ -40,21 +40,22 @@ public class SimulationServer extends VisServer {
 		this.simulations = new ListMethod(refresher);
 		if (SimulationConfig.isServerConfig()) {
 			try {
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "master", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex1-hermit-3", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex2-farmer-3", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-basic-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-interest-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-helicopter-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-buffer-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex4-growth-2", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex5-stocks-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex5-stocks-discount0995-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex5-stocks-discount099-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex6-flow-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex7-equality-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex9-fund-6", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex9-fund-lowinterest-8", true));
+				this.simulations.add(new GitSimulationHandle("meisser", "course2019", "ex1-hermit-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "master", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex1-hermit-3", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex2-farmer-3", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-basic-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-interest-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-helicopter-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex3-money-buffer-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex4-growth-2", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex5-stocks-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex5-stocks-discount0995-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex5-stocks-discount099-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex6-flow-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex7-equality-1", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex9-fund-6", true));
+//				this.simulations.add(new GitSimulationHandle("meisser", "course2018", "ex9-fund-lowinterest-8", true));
 			} catch (IOException e) {
 				System.out.println("Disabled remote repositories. " + e.getMessage());
 			}

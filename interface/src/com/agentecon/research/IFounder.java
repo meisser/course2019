@@ -17,6 +17,8 @@ public interface IFounder {
 	 * in order to kick-start them.
 	 * @param id TODO
 	 */
-	public IFirm considerCreatingFirm(IStatistics statistics, IInnovation research, IAgentIdGenerator id);
+	public default IFirm considerCreatingFirm(IStatistics statistics, IInnovation research, IAgentIdGenerator id) {
+		return null;
+	}
 	
 }
