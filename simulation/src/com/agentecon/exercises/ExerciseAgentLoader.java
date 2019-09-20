@@ -28,9 +28,9 @@ import com.agentecon.sim.SimulationConfig;
 
 public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
-	public static final String DEFAULT_REPO = "course2018";
+	public static final String DEFAULT_REPO = "course2019";
 
-	public static final Collection<String> TEAMS = createRepos(0, 1, 2, 3, 4, 5);
+	public static final Collection<String> TEAMS = createRepos(10);
 
 	public ExerciseAgentLoader(String classname) throws SocketTimeoutException, IOException {
 		this(classname, SimulationConfig.shouldLoadRemoteTeams());
@@ -43,11 +43,14 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 		}
 	}
 
-	private static Collection<String> createRepos(int... numbers) {
+	private static Collection<String> createRepos(int number) {
 		ArrayList<String> repos = new ArrayList<>();
-		for (int i : numbers) {
-			String number = Integer.toString(i);
-			repos.add("team10" + number);
+		for (int i=1; i<=number; i++) {
+			String current = Integer.toString(i);
+			if (current.length() == 1) {
+				current = "0" + current;
+			} 
+			repos.add("team2" + number);
 		}
 		return repos;
 	}
