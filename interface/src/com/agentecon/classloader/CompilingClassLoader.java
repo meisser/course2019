@@ -44,5 +44,12 @@ public class CompilingClassLoader extends RemoteLoader {
 			throw new ClassNotFoundException(name + " not found", e);
 		}
 	}
+	
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
+		CompilingClassLoader comp = new CompilingClassLoader(new LocalSimulationHandle(true));
+		System.out.println(comp.loadBytecode("com.agentecon.Simulation").length);
+		RemoteLoader child = comp.obtainChildLoader(new LocalSimulationHandle(false));
+		child.loadBytecode("com.agentecon.exercise1.Hermit");
+	}
 
 }

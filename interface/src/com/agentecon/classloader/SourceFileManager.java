@@ -175,7 +175,7 @@ public class SourceFileManager extends ForwardingJavaFileManager<JavaFileManager
 			return getJavaSourceFile(className);
 		} else if (byteCode.containsKey(className) && kind == Kind.CLASS) {
 			return getClassFile(className, byteCode.get(className).toByteArray());
-		} else if (parent != null) {
+		} else if (parent != null && !className.contentEquals("module-info")) {
 			return getClassFile(className, parent.getByteCodeSource(className));
 		} else {
 			return null;

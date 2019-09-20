@@ -8,7 +8,6 @@
  */
 package com.agentecon.classloader;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,7 +72,8 @@ public class AgentCompiler implements DiagnosticListener<JavaFileObject> {
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException {
-		AgentCompiler comp = new AgentCompiler(null, new LocalSimulationHandle(true));
+//		AgentCompiler comp = new AgentCompiler(null, new LocalSimulationHandle(true));
+		AgentCompiler comp = new AgentCompiler(null, new GitSimulationHandle("meisser", "course2019", true));
 		System.out.println(comp.findClass("com.agentecon.Simulation").length);
 	}
 
