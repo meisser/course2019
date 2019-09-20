@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Meisser Economics - Simulation List</title>
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap-responsive.css">
+<link type="text/css" rel="stylesheet" href="css/style.css">
+<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="brand" href="/">Agentecon</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+	
+		<h1>API Methods</h1>
+	
+		<div id="methods">Loading available methods...</div>
+
+		<script>
+			$.getJSON("methods", function(data) {
+				var methods = data.methods;
+				document.getElementById('methods').innerHTML = "Found " + methods.length + " methods:";
+				for (var i = 0; i < methods.length; i++) {
+					var element = document.createElement('div');
+					element.innerHTML = '<a href=' + methods[i].examplePath + '>' + methods[i].name + '</a>';
+					document.getElementById('methods').appendChild(element);
+				}
+			});
+		</script>
+	
+		<h1>Simulations</h1>
+		
+		<div id="simlist">Loading available simulations...</div>
+
+		<script>
+			$.getJSON("list", function(data) {
+				var sims = data.sims;
+				document.getElementById('simlist').innerHTML = "Found " + sims.length + " simulations:";
+				for (var i = 0; i < sims.length; i++) {
+					var element = document.createElement('div');
+					element.innerHTML = '<a href=tradegraph?sim=' + sims[i].path + '&day=133&selection=firms,consumers' + '>' + sims[i].path + '</a> by ' + sims[i].owner + ' (<a href=' + sims[i].sourceUrl + '>source</a>)';
+					document.getElementById('simlist').appendChild(element);
+				}
+			});
+		</script>
+
+	</div>
+
+</body>
+</html>

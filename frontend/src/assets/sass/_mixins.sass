@@ -1,0 +1,17 @@
+// Do not put output generating content here
+
+// Clearfix
+@mixin clearfix()
+  &:before,
+  &:after
+    content: " "
+    display: table
+  &:after
+    clear: both
+
+// Basic link stylin
+@mixin link-styling()
+  color: $blue
+  text-decoration: none
+  &:hover
+    color: $blue-hover
