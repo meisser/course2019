@@ -30,27 +30,28 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
 	public static final String DEFAULT_REPO = "course2019";
 
-	public static final Collection<String> TEAMS = createRepos(10);
+	public static final Collection<String> TEAMS = createRepos(2, 1, 2, 3, 4, 5, 6, 7, 8, 10);
 
 	public ExerciseAgentLoader(String classname) throws SocketTimeoutException, IOException {
 		this(classname, SimulationConfig.shouldLoadRemoteTeams());
 	}
 
 	public ExerciseAgentLoader(String classname, boolean remoteTeams) throws SocketTimeoutException, IOException {
-		super(remoteTeams ? new ExerciseAgentFactory(classname, "meisser", DEFAULT_REPO) : new ExerciseAgentFactory(classname));
+		super(remoteTeams ? new ExerciseAgentFactory(classname, "meisser", DEFAULT_REPO)
+				: new ExerciseAgentFactory(classname));
 		if (remoteTeams) {
 			addFactories(classname, remoteTeams);
 		}
 	}
 
-	private static Collection<String> createRepos(int number) {
+	private static Collection<String> createRepos(int year, int... teams) {
 		ArrayList<String> repos = new ArrayList<>();
-		for (int i=1; i<=number; i++) {
+		for (int i: teams) {
 			String current = Integer.toString(i);
 			if (current.length() == 1) {
 				current = "0" + current;
-			} 
-			repos.add("team2" + number);
+			}
+			repos.add("team" + year + current);
 		}
 		return repos;
 	}
@@ -66,7 +67,8 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
 	protected IAgentFactory createFactory(String classname, String team) {
 		try {
-			ExerciseAgentFactory factory = new ExerciseAgentFactory(classname, new GitSimulationHandle("meisser", team, false));
+			ExerciseAgentFactory factory = new ExerciseAgentFactory(classname,
+					new GitSimulationHandle("meisser", team, false));
 			try {
 				Class<?> clazz = factory.preload();
 				check(clazz);
@@ -77,11 +79,12 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 				return getDefaultFactory();
 			}
 		} catch (IOException e) {
-			System.err.println("Could not load agent factory for team " + team + ", falling back to default factory. Reason: " + e);
+			System.err.println("Could not load agent factory for team " + team
+					+ ", falling back to default factory. Reason: " + e);
 			return getDefaultFactory();
 		}
 	}
-	
+
 	protected void check(Class<?> clazz) throws InvalidAgentException {
 	}
 
@@ -92,7 +95,7 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 			public int previewNextId() {
 				return 1;
 			}
-			
+
 			@Override
 			public int createUniqueAgentId() {
 				return 1;
@@ -103,10 +106,10 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 				return new Random();
 			}
 		};
-		for (int i=0; i<6; i++) {
+		for (int i = 0; i < 6; i++) {
 			loader.createFirm(id, new Stock(new Good("Taler")));
 		}
-		
+
 	}
 
 }
