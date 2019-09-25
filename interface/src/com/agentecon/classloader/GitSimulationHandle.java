@@ -15,20 +15,10 @@ public class GitSimulationHandle extends SimulationHandle {
 	private final String branch;
 	private HashMap<String, ProjectFileCache> cache;
 	
-	@Deprecated
-	public GitSimulationHandle(String owner, String repo) throws IOException {
-		this(owner, repo, false);
-	}
-
 	public GitSimulationHandle(String owner, String repo, boolean simulation) throws IOException {
 		this(owner, repo, "master", simulation);
 	}
 	
-	@Deprecated
-	public GitSimulationHandle(String owner, String repo, String branch) throws IOException {
-		this(owner, repo, branch, false);
-	}
-
 	public GitSimulationHandle(String owner, String repo, String branch, boolean simulation) throws IOException {
 		super(owner, repo, simulation);
 		this.branch = branch;
