@@ -28,4 +28,4 @@ $u_t$ is the utility experienced on day t, and $s_{-1}$ is set to 0 (the simulat
 
 Document your findings in the [lab journal](exercise01-journal.md) as you try out different ideas to make your hermit behave optimally.
 
-The deadline for submitting your hermit and the lab journal to github is 2017-09-27 at 24:00.
+The deadline for submitting your hermit and the lab journal to github is 2017-10-03 at 24:00.
