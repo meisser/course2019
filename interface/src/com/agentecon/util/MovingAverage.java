@@ -12,6 +12,12 @@ public class MovingAverage implements Cloneable, IAverage {
 		this(0.95);
 	}
 
+	/**
+	 * The weight of new samples is (1-memory) unless in the beginning.
+	 * In the beginning, the weight of a new sample is 1/samples until
+	 * 1/samples < (1-memory). So if memory is 0.95, the first 19 samples
+	 * get a higher weight than 0.05.
+	 */
 	public MovingAverage(double memory) {
 		this.memory = memory;
 		this.mean = 0.0;
