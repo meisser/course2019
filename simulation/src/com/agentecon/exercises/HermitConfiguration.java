@@ -41,7 +41,7 @@ public class HermitConfiguration extends SimulationConfig implements IInnovation
 
 	public static final Good LAND = new Good("Land", 1.0);
 
-	private static final int ROUNDS = 1000;
+	private static final int ROUNDS = 100;
 
 	public static final Quantity FIXED_COSTS = new Quantity(MAN_HOUR, 6.0);
 

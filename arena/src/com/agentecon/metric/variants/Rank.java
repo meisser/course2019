@@ -18,9 +18,6 @@ public class Rank implements Comparable<Rank> {
 	private String version;
 	private String url;
 
-	@Deprecated
-	private double averageUtility;
-
 	private double score;
 	private transient int instances;
 
@@ -45,10 +42,7 @@ public class Rank implements Comparable<Rank> {
 
 	public void add(double score, boolean average) {
 		if (average) {
-			this.score *= instances++;
-			this.score += score;
-			this.score /= instances;
-			this.averageUtility = score;
+			this.score = ((score * instances++) + score)/instances;
 		} else {
 			this.score += score;
 		}
