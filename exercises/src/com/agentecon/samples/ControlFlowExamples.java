@@ -90,6 +90,12 @@ public class ControlFlowExamples {
 
 	private void check(int i) throws Exception {
 		if (i == 7) {
+			/**
+			 * Exceptions are used to gracefully handle exceptional conditions.
+			 * For example, when reading a file and it suddenly ends or when accidentally dividing by zero.
+			 * They are an advanced feature and you won't need to use them. But you should also not be
+			 * scared when encountering them.
+			 */
 			throw new Exception("Seven reached!");
 		}
 	}
