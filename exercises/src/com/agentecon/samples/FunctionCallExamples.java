@@ -47,6 +47,7 @@ public class FunctionCallExamples {
 	public void callByReference(Collection<String> listOfStrings) {
 		// doing something with the list is visible outside
 		listOfStrings.add("World");
+		listOfStrings = new ArrayList<String>(); // no effect
 	}
 	
 	public void demonstrateOutsideEffect3(FunctionCallExamples other) {

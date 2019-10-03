@@ -5,7 +5,7 @@ import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.consumer.IUtility;
 import com.agentecon.consumer.LogUtilWithFloor;
-import com.agentecon.consumer.MortalConsumer;
+import com.agentecon.consumer.RetiringConsumer;
 import com.agentecon.world.ICountry;
 
 public class LinearConsumerEvent extends ConsumerEvent {
@@ -35,7 +35,7 @@ public class LinearConsumerEvent extends ConsumerEvent {
 			int step = maxAge / initialPopulation;
 			for (; initialPopulation > 0; initialPopulation--) {
 				int maxAge = Math.max(this.maxAge - initialPopulation * step, step);
-				sim.add(new MortalConsumer(sim, maxAge, end, utilFun.create(count++)));
+				sim.add(new RetiringConsumer(sim, maxAge, end, utilFun.create(count++)));
 			}
 		}
 		super.execute(day, sim);
@@ -43,7 +43,7 @@ public class LinearConsumerEvent extends ConsumerEvent {
 	
 	@Override
 	protected IConsumer createConsumer(IAgentIdGenerator id, Endowment end, IUtility util){
-		return new MortalConsumer(id, this.maxAge, end, util);
+		return new RetiringConsumer(id, this.maxAge, end, util);
 	}
 
 }

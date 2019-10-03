@@ -46,7 +46,7 @@ public class HermitConfiguration extends SimulationConfig implements IInnovation
 	public static final Quantity FIXED_COSTS = new Quantity(MAN_HOUR, 6.0);
 
 	public HermitConfiguration() throws IOException {
-		this(new ExerciseAgentLoader(AGENT_CLASS_NAME), 16);
+		this(new ExerciseAgentLoader(AGENT_CLASS_NAME), ExerciseAgentLoader.TEAMS.size());
 	}
 
 	public HermitConfiguration(IAgentFactory factory, int agents) {

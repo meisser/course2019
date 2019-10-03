@@ -5,7 +5,7 @@ import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.goods.Inventory;
 import com.agentecon.market.IPriceTakerMarket;
 
-public class BufferingMortalConsumer extends MortalConsumer {
+public class BufferingMortalConsumer extends RetiringConsumer {
 	
 	private static final double CAPITAL_BUFFER = 0.80;
 	public static final double MINIMUM_WORKING_HOURS = 5;

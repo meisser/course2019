@@ -35,7 +35,7 @@ import com.agentecon.util.Numbers;
  * Unlike the Hermit, the farmer can decide to work at other farms and to buy from others. To formalize these relationships, the farmer does not produce himself anymore, but instead uses his land to
  * found a profit-maximizing firm.
  */
-public class InvestingConsumer extends MortalConsumer implements IFounder {
+public class InvestingConsumer extends RetiringConsumer implements IFounder {
 
 	private static final double DISCOUNT_RATE = 0.995;
 

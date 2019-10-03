@@ -80,7 +80,7 @@ public class MathExamples {
 
 	public static void main(String[] args) {
 		MathExamples samples = new MathExamples();
-		samples.someIntOperations(1000);
+//		samples.someIntOperations(1000);
 		samples.someFloatOperations(3.141);
 	}
 

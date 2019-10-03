@@ -8,7 +8,6 @@
  */
 package com.agentecon.exercises;
 
-import java.io.IOException;
 import java.io.PrintStream;
 
 import com.agentecon.IAgentFactory;
@@ -16,8 +15,6 @@ import com.agentecon.ISimulation;
 import com.agentecon.agent.Endowment;
 import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.agent.IAgents;
-import com.agentecon.configuration.AgentFactoryMultiplex;
-import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.consumer.IUtility;
 import com.agentecon.consumer.LogUtilWithFloor;
@@ -42,8 +39,6 @@ import com.agentecon.util.Average;
 
 public class FarmingConfiguration extends SimulationConfig implements IInnovation, IUtilityFactory {
 
-	private static final int AGENTS = 32;
-
 	public static final String FARMER = "com.agentecon.exercise2.Farmer";
 
 	public static final Good LAND = HermitConfiguration.LAND;
@@ -55,15 +50,6 @@ public class FarmingConfiguration extends SimulationConfig implements IInnovatio
 	public static final int ROUNDS = 10000;
 
 	public static final Quantity FIXED_COSTS = HermitConfiguration.FIXED_COSTS;
-
-	@SafeVarargs
-	public FarmingConfiguration(Class<? extends Consumer>... agents) {
-		this(new AgentFactoryMultiplex(agents), AGENTS);
-	}
-
-	public FarmingConfiguration() throws IOException {
-		this(new ExerciseAgentLoader(FARMER), AGENTS);
-	}
 
 	public FarmingConfiguration(IAgentFactory factory, int agents) {
 		super(ROUNDS);

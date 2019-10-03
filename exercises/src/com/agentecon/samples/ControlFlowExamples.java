@@ -41,7 +41,7 @@ public class ControlFlowExamples {
 	public boolean containsClassic(List<String> list, String keyword) {
 		// for loop has three parts: for (initialization, condition, action)
 		// see example below for equivalent loop with "while"
-		for (int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i = i + 1) {
 			String element = list.get(i);
 			if (element.equals(keyword)) {
 				return true;
@@ -102,8 +102,8 @@ public class ControlFlowExamples {
 	
 	public static void main(String[] args) {
 		ControlFlowExamples examples = new ControlFlowExamples();
-		System.out.println(examples.getWord2(2));
-		System.out.println(examples.exceptionExample(-5));
+		System.out.println(examples.getWord1(2));
+//		System.out.println(examples.exceptionExample(-5));
 	}
 
 }
