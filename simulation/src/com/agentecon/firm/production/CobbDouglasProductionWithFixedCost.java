@@ -21,6 +21,22 @@ public class CobbDouglasProductionWithFixedCost extends CobbDouglasProduction {
 		this.fixedCost = fixedCost;
 		assert !getWeight(fixedCost.getGood()).capital : "Fixed costs for capital goods not yet supported";
 	}
+	
+	public CobbDouglasProductionWithFixedCost(Good output, double constantFactor, double multiplier, Quantity fixedCost, Weight... weights) {
+		super(output, constantFactor, multiplier, weights);
+		this.fixedCost = fixedCost;
+		assert !getWeight(fixedCost.getGood()).capital : "Fixed costs for capital goods not yet supported";
+	}
+	
+	@Override
+	public CobbDouglasProduction scaleInputsDownAndOutputsUp(double factor) {
+		throw new RuntimeException();
+	}
+
+	@Override
+	public CobbDouglasProduction adjustReturnsToScale(double returnsToScale) {
+		throw new RuntimeException();
+	}
 
 	@Override
 	public double getFixedCost(Good good) {
@@ -31,7 +47,7 @@ public class CobbDouglasProductionWithFixedCost extends CobbDouglasProduction {
 	public double getFixedCosts(IPriceProvider prices) throws PriceUnknownException {
 		return prices.getPriceBelief(fixedCost);
 	}
-
+	
 	/**
 	 * This does not change with fixed costs as the fixed costs are deducted from profits.
 	 */

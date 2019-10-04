@@ -1,4 +1,4 @@
-package com.agentecon.finance.credit;
+package com.agentecon.finance.bank;
 
 import java.util.ArrayList;
 import java.util.Iterator;

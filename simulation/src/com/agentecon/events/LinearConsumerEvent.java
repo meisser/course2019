@@ -42,7 +42,7 @@ public class LinearConsumerEvent extends ConsumerEvent {
 	}
 	
 	@Override
-	protected IConsumer createConsumer(IAgentIdGenerator id, Endowment end, IUtility util){
+	protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util){
 		return new RetiringConsumer(id, this.maxAge, end, util);
 	}
 

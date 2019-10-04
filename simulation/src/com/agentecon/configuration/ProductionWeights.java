@@ -24,7 +24,7 @@ public class ProductionWeights {
 			Good good = inputs[(i + type) % inputs.length];
 			prefs[i] = new Weight(good, WEIGHTS[i]);
 		}
-		return new CobbDouglasProduction(outputs[type], prefs).scale(retToScale);
+		return new CobbDouglasProduction(outputs[type], prefs).adjustReturnsToScale(retToScale);
 	}
 
 }

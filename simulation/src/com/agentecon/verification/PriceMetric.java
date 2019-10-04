@@ -66,10 +66,6 @@ public class PriceMetric extends SimulationListenerAdapter implements IMarketLis
 		market.addMarketListener(this);
 	}
 	
-	@Override
-	public void notifyMarketClosed(int day) {
-	}
-
 	public boolean isStable() {
 		for (AccumulatingAverage ma : prices.values()) {
 			if (!ma.isStable()) {

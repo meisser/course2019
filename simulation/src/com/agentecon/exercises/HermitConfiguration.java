@@ -14,7 +14,6 @@ import java.io.PrintStream;
 import com.agentecon.IAgentFactory;
 import com.agentecon.ISimulation;
 import com.agentecon.agent.Endowment;
-import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.consumer.IUtility;
 import com.agentecon.consumer.LogUtilWithFloor;
@@ -30,6 +29,7 @@ import com.agentecon.production.IProductionFunction;
 import com.agentecon.research.IInnovation;
 import com.agentecon.research.IResearchProject;
 import com.agentecon.sim.SimulationConfig;
+import com.agentecon.world.ICountry;
 
 public class HermitConfiguration extends SimulationConfig implements IInnovation, IUtilityFactory {
 
@@ -54,7 +54,7 @@ public class HermitConfiguration extends SimulationConfig implements IInnovation
 		Endowment end = createEndowment();
 		addEvent(new ConsumerEvent(agents, end, this) {
 			@Override
-			protected IConsumer createConsumer(IAgentIdGenerator id, Endowment end, IUtility util) {
+			protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
 				return factory.createConsumer(id, end, util);
 			}
 		});
@@ -91,11 +91,6 @@ public class HermitConfiguration extends SimulationConfig implements IInnovation
 		double fixedCost = prodFun.getFixedCost(MAN_HOUR);
 		double optimalWorkAmount = (DAILY_ENDOWMENT * weight + fixedCost) / (1 + weight);
 		out.println("Optimal work amount would be " + optimalWorkAmount);
-	}
-
-	@Override
-	public IResearchProject createResearchProject(Good desiredOutput) {
-		throw new RuntimeException("not implemented");
 	}
 
 //	private static IAgentFactory createFactory() throws SocketTimeoutException, IOException {

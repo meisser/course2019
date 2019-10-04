@@ -3,7 +3,7 @@ package com.agentecon.finance;
 import java.util.ArrayList;
 
 import com.agentecon.agent.IAgent;
-import com.agentecon.finance.credit.CreditAccount;
+import com.agentecon.finance.bank.CreditAccount;
 import com.agentecon.finance.stockpicking.IStockPickingStrategy;
 import com.agentecon.firm.IStockMarket;
 import com.agentecon.firm.Portfolio;

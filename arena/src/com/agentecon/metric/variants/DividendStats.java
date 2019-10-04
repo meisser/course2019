@@ -14,9 +14,11 @@ public class DividendStats extends SimStats {
 
 	private TimeSeriesCollector collector;
 	private boolean consumer;
+	private boolean average;
 
-	public DividendStats(ISimulation agents, boolean consumer, boolean details) {
+	public DividendStats(ISimulation agents, boolean consumer, boolean average, boolean details) {
 		super(agents);
+		this.average = average;
 		this.consumer = consumer;
 		this.collector = new TimeSeriesCollector(details, getMaxDay());
 	}
@@ -45,7 +47,7 @@ public class DividendStats extends SimStats {
 		super.notifyDayEnded(stats);
 		int day = stats.getDay();
 		collector.reportZeroIfNoData();
-		collector.flushDay(day, true);
+		collector.flushDay(day, average);
 	}
 
 	@Override

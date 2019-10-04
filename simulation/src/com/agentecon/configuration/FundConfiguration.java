@@ -18,7 +18,7 @@ import com.agentecon.exercises.ExerciseAgentLoader;
 import com.agentecon.exercises.HermitConfiguration;
 import com.agentecon.exercises.HighProductivityConfiguration;
 import com.agentecon.finance.MarketMaker;
-import com.agentecon.finance.credit.CreditBank;
+import com.agentecon.finance.bank.CreditBank;
 import com.agentecon.firm.IBank;
 import com.agentecon.goods.IStock;
 import com.agentecon.goods.Stock;

@@ -1,4 +1,4 @@
-package com.agentecon.finance.credit;
+package com.agentecon.finance.bank;
 
 public class CreditorBankruptException extends Exception {
 

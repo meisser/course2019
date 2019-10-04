@@ -10,19 +10,10 @@ public interface IFirm extends IAgent {
 
 	public Ticker getTicker();
 	
-	public void inherit(Position pos);
-	
 	public void raiseCapital(IStockMarket stockmarket);
 
-	@Deprecated
-	public default void payDividends(int day) {
-		assert false; // should never be called
-	}
-	
-	public default void payDividends(IStatistics stats) {
-		payDividends(stats.getDay());
-	}
-	
+	public void payDividends(IStatistics stats);
+
 	public void addFirmMonitor(IFirmListener monitor);
 
 	/**

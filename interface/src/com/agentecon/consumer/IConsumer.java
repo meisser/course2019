@@ -3,8 +3,6 @@
 package com.agentecon.consumer;
 
 import com.agentecon.agent.IAgent;
-import com.agentecon.firm.Portfolio;
-import com.agentecon.goods.Inventory;
 
 public interface IConsumer extends IAgent, IMarketParticipant {
 	
@@ -30,19 +28,10 @@ public interface IConsumer extends IAgent, IMarketParticipant {
 		return null;
 	}
 	
-	@Deprecated
-	public default Inventory considerDeath(Portfolio inheritance) {
-		Inheritance inh = considerDeath();
-		inheritance.absorb(inh.getPortfolio());
-		return inh.getInventory();
-	}
-	
 	/**
 	 * Receive an inheritance.
 	 */
-	public default void inherit(Inheritance removeFirst) {
-		throw new RuntimeException("not implemented");
-	}
+	public void inherit(Inheritance removeFirst);
 	
 	public boolean isRetired();
 	

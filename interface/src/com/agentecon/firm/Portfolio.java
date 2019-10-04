@@ -27,7 +27,8 @@ public class Portfolio implements Cloneable {
 	}
 
 	/**
-	 * Make the simulation slower as empty positions are not removed. This can be useful when posting limit orders for new stocks.
+	 * Make the simulation slower as empty positions are not removed. This can be useful when posting limit orders for new
+	 * stocks.
 	 */
 	public void setKeepEmptyPositions() {
 		this.keepEmptyPositions = true;
@@ -129,6 +130,15 @@ public class Portfolio implements Cloneable {
 
 	public boolean hasPositions() {
 		return inv.size() > 0;
+	}
+
+	public boolean hasSomething() {
+		for (IStock stock : inv.values()) {
+			if (stock.hasSome()) {
+				return true;
+			}
+		}
+		return wallet.hasSome();
 	}
 
 	public double getAvailableBudget() {

@@ -18,6 +18,7 @@ import com.agentecon.goods.Stock;
 import com.agentecon.production.IProductionFunction;
 import com.agentecon.sim.SimulationConfig;
 import com.agentecon.verification.PriceMetric;
+import com.agentecon.world.ICountry;
 
 public class CobbDougConfiguration implements IConfiguration {
 
@@ -113,7 +114,7 @@ public class CobbDougConfiguration implements IConfiguration {
 			final int type = i;
 			config.add(new ConsumerEvent(consumersPerType, end, defaultPrefs.getFactory(i)) {
 				@Override
-				protected IConsumer createConsumer(IAgentIdGenerator id, Endowment end, IUtility util) {
+				protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
 					return new Consumer(id, end, util) {
 						@Override
 						protected String inferType(Class<? extends Agent> clazz) {

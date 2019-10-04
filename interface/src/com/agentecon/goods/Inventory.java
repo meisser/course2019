@@ -161,6 +161,15 @@ public class Inventory {
 		return inv.values().stream().filter(g -> g.hasSome()).map(g -> g.getQuantity()).collect(Collectors.toList());
 	}
 	
+	public boolean hasSomething() {
+		for (IStock stock: inv.values()) {
+			if (stock.hasSome()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		String list = null;

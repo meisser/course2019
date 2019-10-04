@@ -45,8 +45,17 @@ public class Inheritance implements IShareholder {
 	public void managePortfolio(IStockMarket dsm) {
 	}
 	
+	public boolean hasSomething() {
+		return inventory.hasSomething() || portfolio.hasSomething();
+	}
+	
 	public Inheritance clone() {
 		throw new RuntimeException("Not yet implemented");
+	}
+	
+	@Override
+	public String toString() {
+		return inventory.toString() + " " + portfolio.toString();
 	}
 
 }

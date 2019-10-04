@@ -129,8 +129,4 @@ public class TradeGraph extends SimulationListenerAdapter implements ISimulation
 		throw new RuntimeException("Could not find a node that matches " + agent);
 	}
 
-	@Override
-	public void notifyMarketClosed(int day) {
-	}
-
 }

@@ -108,7 +108,6 @@ public class MarketStats extends SimStats implements IMarketListener {
 		}
 	}
 	
-	@Override
 	public void notifyMarketClosed(int day) {
 		Average indexValue = new Average();
 		for (Entry<Good, Average> e : averages.entrySet()) {

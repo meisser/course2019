@@ -51,9 +51,6 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 
 	public void tradeGoods(IPriceTakerMarket market) {
 		Inventory inv = getInventory();
-		if (isRetired()) {
-			inv = inv.hide(soldGood); // cannot work any more, hide hours
-		}
 		trade(inv, market);
 	}
 
@@ -131,7 +128,10 @@ public class Consumer extends Agent implements IConsumer, IShareholder {
 	}
 
 	public double consume() {
-		Inventory inv = getInventory();
+		return consume(getInventory());
+	}
+
+	protected double consume(Inventory inv) {
 		double u = utility.consume(inv.getAll());
 		listeners.notifyConsuming(this, getAge(), getInventory(), u);
 		assert !Double.isNaN(u);

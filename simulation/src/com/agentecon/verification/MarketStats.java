@@ -14,6 +14,7 @@ import com.agentecon.firm.Ticker;
 import com.agentecon.goods.Good;
 import com.agentecon.market.IMarket;
 import com.agentecon.market.IMarketListener;
+import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.sim.SimulationListenerAdapter;
 import com.agentecon.util.Average;
 import com.agentecon.util.InstantiatingConcurrentHashMap;
@@ -63,7 +64,7 @@ public class MarketStats extends SimulationListenerAdapter implements IMarketLis
 	}
 	
 	@Override
-	public void notifyMarketClosed(int day) {
+	public void notifyMarketClosed(int day, IPriceTakerMarket market) {
 		Average indexPoints = new Average();
 		HashMap<Good, Average> sectorIndices = new InstantiatingHashMap<Good, Average>() {
 

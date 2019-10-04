@@ -13,7 +13,6 @@ import java.io.PrintStream;
 import com.agentecon.IAgentFactory;
 import com.agentecon.ISimulation;
 import com.agentecon.agent.Endowment;
-import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.agent.IAgents;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.consumer.IUtility;
@@ -36,6 +35,7 @@ import com.agentecon.research.IResearchProject;
 import com.agentecon.sim.IOptimalityIndicator;
 import com.agentecon.sim.SimulationConfig;
 import com.agentecon.util.Average;
+import com.agentecon.world.ICountry;
 
 public class FarmingConfiguration extends SimulationConfig implements IInnovation, IUtilityFactory {
 
@@ -58,7 +58,7 @@ public class FarmingConfiguration extends SimulationConfig implements IInnovatio
 		Endowment end = new Endowment(getMoney(), initialEndowment, dailyEndowment);
 		addEvent(new ConsumerEvent(agents, end, this) {
 			@Override
-			protected IConsumer createConsumer(IAgentIdGenerator id, Endowment end, IUtility util) {
+			protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
 				return factory.createConsumer(id, end, util);
 			}
 		});
@@ -88,11 +88,6 @@ public class FarmingConfiguration extends SimulationConfig implements IInnovatio
 	public CobbDouglasProductionWithFixedCost createProductionFunction(Good desiredOutput) {
 		assert desiredOutput.equals(POTATOE);
 		return new CobbDouglasProductionWithFixedCost(POTATOE, 1.0, FIXED_COSTS, new Weight(LAND, 0.2, true), new Weight(MAN_HOUR, 0.6));
-	}
-
-	@Override
-	public IResearchProject createResearchProject(Good desiredOutput) {
-		return null;
 	}
 
 	@Override

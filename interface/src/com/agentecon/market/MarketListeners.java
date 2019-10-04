@@ -29,13 +29,6 @@ public class MarketListeners extends AbstractListenerList<IMarketListener> imple
 	}
 
 	@Override
-	public void notifyMarketClosed(int day) {
-		for (IMarketListener l: list){
-			l.notifyMarketClosed(day);
-		}
-	}
-
-	@Override
 	public void notifyMarketClosed(int day, IPriceTakerMarket market) {
 		for (IMarketListener l: list){
 			l.notifyMarketClosed(day, market);

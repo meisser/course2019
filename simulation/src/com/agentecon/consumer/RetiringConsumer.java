@@ -4,9 +4,11 @@ package com.agentecon.consumer;
 
 import com.agentecon.agent.Endowment;
 import com.agentecon.agent.IAgentIdGenerator;
+import com.agentecon.goods.Inventory;
+import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.util.MovingAverage;
 
-public class RetiringConsumer extends MortalConsumer {
+public class RetiringConsumer extends BufferingMortalConsumer {
 	
 	private MovingAverage dailySpendings;
 
@@ -32,6 +34,14 @@ public class RetiringConsumer extends MortalConsumer {
 			listeners.notifyRetiring(this, age);
 		}
 		return inh;
+	}
+	
+	@Override
+	protected void trade(Inventory inv, IPriceTakerMarket market) {
+		if (isRetired()) {
+			inv = inv.hide(getManHours()); // cannot work any more, hide hours
+		}
+		super.trade(inv, market);
 	}
 
 	@Override

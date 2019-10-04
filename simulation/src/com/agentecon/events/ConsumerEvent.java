@@ -2,7 +2,6 @@ package com.agentecon.events;
 
 import com.agentecon.agent.Agent;
 import com.agentecon.agent.Endowment;
-import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.consumer.Consumer;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.consumer.IUtility;
@@ -32,7 +31,7 @@ public class ConsumerEvent extends SimEvent {
 		}
 	}
 
-	protected IConsumer createConsumer(IAgentIdGenerator id, Endowment end, IUtility util){
+	protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util){
 		return new Consumer(id, end, util);
 	}
 

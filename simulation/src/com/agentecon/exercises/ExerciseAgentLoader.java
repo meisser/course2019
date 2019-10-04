@@ -37,8 +37,7 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 	}
 
 	public ExerciseAgentLoader(String classname, boolean remoteTeams) throws SocketTimeoutException, IOException {
-		super(remoteTeams ? new ExerciseAgentFactory(classname, "meisser", DEFAULT_REPO)
-				: new ExerciseAgentFactory(classname));
+		super(remoteTeams ? new ExerciseAgentFactory(classname, "meisser", DEFAULT_REPO) : new ExerciseAgentFactory(classname));
 		if (remoteTeams) {
 			addFactories(classname, remoteTeams);
 		}
@@ -46,7 +45,7 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
 	private static Collection<String> createRepos(int year, int... teams) {
 		ArrayList<String> repos = new ArrayList<>();
-		for (int i: teams) {
+		for (int i : teams) {
 			String current = Integer.toString(i);
 			if (current.length() == 1) {
 				current = "0" + current;
@@ -67,8 +66,7 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
 	protected IAgentFactory createFactory(String classname, String team) {
 		try {
-			ExerciseAgentFactory factory = new ExerciseAgentFactory(classname,
-					new GitSimulationHandle("meisser", team, false));
+			ExerciseAgentFactory factory = new ExerciseAgentFactory(classname, new GitSimulationHandle("meisser", team, false));
 			try {
 				Class<?> clazz = factory.preload();
 				check(clazz);
@@ -79,8 +77,7 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 				return getDefaultFactory();
 			}
 		} catch (IOException e) {
-			System.err.println("Could not load agent factory for team " + team
-					+ ", falling back to default factory. Reason: " + e);
+			System.err.println("Could not load agent factory for team " + team + ", falling back to default factory. Reason: " + e);
 			return getDefaultFactory();
 		}
 	}

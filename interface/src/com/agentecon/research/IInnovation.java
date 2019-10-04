@@ -18,6 +18,8 @@ public interface IInnovation {
 	 * Can return null if the configuration does support research projects
 	 * for the desired output good.
 	 */
-	public IResearchProject createResearchProject(Good desiredOutput);
+	public default IResearchProject createResearchProject(Good desiredOutput) {
+		return null;
+	}
 	
 }

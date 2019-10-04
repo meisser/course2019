@@ -45,7 +45,7 @@ public class DefaultRealEstateAgent extends Producer {
 	private Ask currentAsk;
 
 	public DefaultRealEstateAgent(IAgentIdGenerator id, Endowment end, IProductionFunction prodFun) {
-		super(id, end, prodFun);
+		super(id, null, prodFun, end);
 
 		assert prodFun.getInputs().length == 1;
 		Good manhour = prodFun.getInputs()[0];

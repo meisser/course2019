@@ -19,20 +19,7 @@ public abstract class AbstractOffer implements Comparable<AbstractOffer>, IOffer
 	private double volume;
 	private double quantity;
 
-	private static final IMarketListener NULL_LISTENER = new IMarketListener() {
-
-		@Override
-		public void notifyTraded(IAgent seller, IAgent buyer, Good good, double quantity, double payment) {
-		}
-
-		@Override
-		public void notifyTradesCancelled() {
-		}
-
-		@Override
-		public void notifyMarketClosed(int day) {
-		}
-	};
+	private static final IMarketListener NULL_LISTENER = new IMarketListener() {};
 
 	public AbstractOffer(IAgent initator, IStock wallet, IStock stock, Price price, double quantity) {
 		this.owner = initator;

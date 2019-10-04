@@ -11,11 +11,6 @@ public class Position extends Stock {
 	private boolean disposed;
 	private IRegister register;
 	
-	@Deprecated
-	public Position(IRegister register, Ticker ticker, Good currency, double shares) {
-		this(register, ticker, currency, shares, true);
-	}
-	
 	public Position(IRegister register, Ticker ticker, Good currency, double shares, boolean consumer) {
 		super(ticker, shares);
 		this.consumer = consumer;
@@ -35,11 +30,6 @@ public class Position extends Stock {
 	@Override
 	public void transfer(IStock source, double amount) {
 		super.transfer(source, amount);
-	}
-	
-	@Deprecated
-	public Position createNewPosition(){
-		return createNewPosition(true);
 	}
 	
 	public Position createNewPosition(boolean consumer){

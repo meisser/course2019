@@ -21,7 +21,7 @@ public class MetricsMethod extends WebApiMethod {
 
 	@Override
 	protected JsonData getJsonAnswer(Parameters params) throws IOException {
-		return new Metrics(EMetrics.values());
+		return new Metrics(EMetrics.ENABLED_METRICS);
 	}
 
 	class Metrics extends JsonData {

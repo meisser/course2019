@@ -32,8 +32,10 @@ import com.agentecon.metric.variants.WealthStats;
 import com.agentecon.web.query.AgentQuery;
 
 public enum EMetrics {
-
-	CASH, DEMOGRAPHICS, DIVIDENDS, DIVIDENDS_TO_CONSUMERS, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, WEALTH, TYPE;
+	
+	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, DIVIDENDS_TO_CONSUMERS, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, WEALTH, TYPE;
+	
+	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {DEMOGRAPHICS, TYPE, INVENTORY, CASH, TOTAL_DIVIDENDS, PRODUCTION, PRODUCTION_DETAILS, MARKET, MONETARY, UTILITY, RANKING_CONSUMERS};
 
 	public SimStats createAndRegister(ISimulation sim, List<String> list, boolean details) {
 		ArrayList<AgentQuery> queries = new ArrayList<>();
@@ -53,14 +55,16 @@ public enum EMetrics {
 			return "Total net worth at market prices. Related: cash statistics.";
 		case DEMOGRAPHICS:
 			return "The size of the population and related figures.";
-		case DIVIDENDS:
-			return "Dividends paid out to free float shareholders (no dividend is paid to firm itself). For firm types, the average over all instances is calculated.";
+		case TOTAL_DIVIDENDS:
+			return "Total dividends paid out to free float shareholders (no dividend is paid to firm itself).";
+		case AVERAGE_DIVIDENDS:
+			return "Average dividends paid out to free float shareholders (no dividend is paid to firm itself).";
 		case DIVIDENDS_TO_CONSUMERS:
 			return "Daily real dividends paid to consumers. To calculate real dividends, nominal dividends are divided by the price index of the goods market. For firm types, the average over all instances is calculated.";
 		case EQUALITY:
 			return "Gini co-efficient for various cohorts over time. A low value implies more equality.";
 		case RANKING_CONSUMERS:
-			return "The consumer ranking over time.";
+			return "The average over the exponentially moving average of daily utility. The 'all' variant is used for the ranking.";
 		case RANKING_FIRMS:
 			return "The firm ranking over time.";
 //		case FIRM:
@@ -94,10 +98,12 @@ public enum EMetrics {
 		switch (this) {
 		case DEMOGRAPHICS:
 			return new Demographics(sim);
-		case DIVIDENDS:
-			return new DividendStats(sim, false, details);
+		case TOTAL_DIVIDENDS:
+			return new DividendStats(sim, false, false, details);
+		case AVERAGE_DIVIDENDS:
+			return new DividendStats(sim, false, true, details);
 		case DIVIDENDS_TO_CONSUMERS:
-			return new DividendStats(sim, true, details);
+			return new DividendStats(sim, true, false, details);
 		case EQUALITY:
 			return new Equality(sim);
 //		case FIRM:

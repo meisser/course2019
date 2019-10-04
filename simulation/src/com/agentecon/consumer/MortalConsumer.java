@@ -4,7 +4,6 @@ import com.agentecon.agent.Endowment;
 import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.firm.Portfolio;
 import com.agentecon.goods.Inventory;
-import com.agentecon.util.MovingAverage;
 
 public class MortalConsumer extends Consumer {
 

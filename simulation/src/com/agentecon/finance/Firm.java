@@ -24,9 +24,11 @@ public abstract class Firm extends Agent implements IFirm {
 
 	public Firm(IAgentIdGenerator ids, IShareholder owner, Endowment end) {
 		this(ids, end);
-		Position ownerPosition = this.register.createPosition(owner instanceof IConsumer);
-		this.register.claimCompanyShares(ownerPosition);
-		owner.getPortfolio().addPosition(ownerPosition);
+		if (owner != null) {
+			Position ownerPosition = this.register.createPosition(owner instanceof IConsumer);
+			this.register.claimCompanyShares(ownerPosition);
+			owner.getPortfolio().addPosition(ownerPosition);
+		}
 	}
 
 	public Firm(IAgentIdGenerator ids, Endowment end) {
@@ -51,15 +53,10 @@ public abstract class Firm extends Agent implements IFirm {
 	}
 
 	@Override
-	public void inherit(Position pos) {
-		register.inherit(pos);
-	}
-
-	@Override
 	public void raiseCapital(IStockMarket stockmarket) {
 		raiseCapital(stockmarket, 0.0);
 	}
-	
+
 	public double raiseCapital(IStockMarket stockmarket, double valuation) {
 		return register.raiseCapital(stockmarket, this, getDividendWallet(), valuation);
 	}
@@ -68,7 +65,7 @@ public abstract class Firm extends Agent implements IFirm {
 		assert false;
 		return 0;
 	}
-	
+
 	protected double calculateDividends(IStatistics stats) {
 		return calculateDividends(stats.getDay());
 	}
@@ -77,7 +74,7 @@ public abstract class Firm extends Agent implements IFirm {
 		super.age();
 		return false;
 	}
-	
+
 	@Override
 	public final void payDividends(IStatistics stats) {
 		double dividend = calculateDividends(stats);

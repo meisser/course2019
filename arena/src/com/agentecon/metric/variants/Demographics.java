@@ -19,6 +19,7 @@ public class Demographics extends SimStats {
 	private TimeSeries retired;
 	private TimeSeries working;
 	private TimeSeries population, dependency, dailyutility;
+	private Map<String, AveragingTimeSeries> populationByType;
 	private Map<String, AveragingTimeSeries> utilityOnDeath;
 
 	public Demographics(ISimulation agents) {
@@ -35,6 +36,13 @@ public class Demographics extends SimStats {
 				return new AveragingTimeSeries(key, getMaxDay());
 			}
 		};
+		this.populationByType = new InstantiatingConcurrentHashMap<String, AveragingTimeSeries>() {
+
+			@Override
+			protected AveragingTimeSeries create(String key) {
+				return new AveragingTimeSeries(key, getMaxDay());
+			}
+		};
 	}
 
 	@Override
@@ -45,6 +53,9 @@ public class Demographics extends SimStats {
 		for (AveragingTimeSeries pc : utilityOnDeath.values()) {
 			pc.push(day);
 		}
+		for (AveragingTimeSeries type : populationByType.values()) {
+			type.pushSum(day);
+		}
 		Collection<? extends IConsumer> cons = getAgents().getConsumers();
 		int retired = 0, working = 0, total = 0;
 		for (IConsumer c : cons) {
@@ -54,11 +65,12 @@ public class Demographics extends SimStats {
 			} else {
 				working++;
 			}
+			populationByType.get(c.getType()).add(1.0);
 		}
 		this.retired.set(day, retired);
 		this.population.set(day, total);
 		this.working.set(day, working);
-		if (retired > 0){
+		if (retired > 0) {
 			this.dependency.set(day, ((double) working) / retired);
 		}
 	}
@@ -78,8 +90,8 @@ public class Demographics extends SimStats {
 
 	@Override
 	public Collection<? extends Chart> getCharts() {
-		return Arrays.asList(new Chart("Population", "Retired, working and total population", retired, working, population),
-				new Chart("Dependency Ratio", "Retirees per workers", dependency), new Chart("Utility", "Accumulated life-time utility on day of death", getUtilityData()));
+		return Arrays.asList(new Chart("Population", "Retired, working and total population", retired, working, population), new Chart("Dependency Ratio", "Retirees per workers", dependency),
+				new Chart("Utility", "Accumulated life-time utility on day of death", getUtilityData()));
 	}
 
 	@Override
@@ -88,6 +100,9 @@ public class Demographics extends SimStats {
 		all.addAll(Arrays.asList(population, retired, working, dependency));
 		all.addAll(TimeSeries.prefix("Utility on death", getUtilityData()));
 		all.add(dailyutility);
+		if (populationByType.size() > 1) {
+			all.addAll(TimeSeries.prefix("Population of ", AveragingTimeSeries.unwrap(populationByType.values())));
+		}
 		return all;
 	}
 

@@ -9,10 +9,10 @@ import java.util.Random;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import com.agentecon.agent.IAgents;
-import com.agentecon.configuration.FundConfiguration;
+import com.agentecon.configuration.BasicEconomyConfiguration;
+import com.agentecon.configuration.CustomConfiguration;
 import com.agentecon.configuration.IConfiguration;
 import com.agentecon.events.SimEvent;
-import com.agentecon.exercises.HermitConfiguration;
 import com.agentecon.finance.StockMarket;
 import com.agentecon.goods.Good;
 import com.agentecon.market.IDiscountRate;
@@ -45,7 +45,8 @@ public class Simulation implements ISimulation, IStatistics, IIteratedSimulation
 	private MarketStatistics goodsMarketStats;
 
 	public Simulation() throws IOException {
-		this(new HermitConfiguration());
+//		this(new CustomConfiguration());
+		this(new BasicEconomyConfiguration(534, true));
 	}
 	
 	public Simulation(IConfiguration metaConfig) {
@@ -93,21 +94,38 @@ public class Simulation implements ISimulation, IStatistics, IIteratedSimulation
 	public void run() {
 		forwardTo(config.getRounds());
 	}
+	
+//	private double moneySupply = Double.MIN_VALUE; 
+//	
+//	private void checkMoneySupply(double calculateMoneySupply) {
+//		if (this.moneySupply == Double.MIN_VALUE || Numbers.equals(moneySupply, calculateMoneySupply)) {
+//			this.moneySupply = calculateMoneySupply;
+//		} else {
+//			assert false : moneySupply - calculateMoneySupply + " disappeared";
+//		}
+//	}
 
 	@Override
 	public void forwardTo(int targetDay) {
 		targetDay = Math.min(targetDay, getConfig().getRounds());
 		for (; day < targetDay; day++) {
-			processEvents(day); // must happen before daily endowments
 			world.prepareDay(getStatistics());
+			processEvents(day); // must happen before daily endowments
+//			checkMoneySupply(world.getAgents().calculateMoneySupply());
+			world.startDay(getStatistics());
+//			checkMoneySupply(world.getAgents().calculateMoneySupply());
 			stocks.trade(day, getStatistics());
+//			checkMoneySupply(world.getAgents().calculateMoneySupply());
 			RepeatedMarket market = new RepeatedMarket(world, listeners, goodsMarketStats);
 			goodsMarketStats.notifyMarketOpened();
+//			checkMoneySupply(world.getAgents().calculateMoneySupply());
 			market.iterate(day, config.getIntradayIterations());
 			for (IProducer firm : world.getAgents().getProducers()) {
 				firm.produce();
 			}
+//			checkMoneySupply(world.getAgents().calculateMoneySupply());
 			world.finishDay(getStatistics());
+//			checkMoneySupply(world.getAgents().calculateMoneySupply());
 		}
 	}
 

@@ -27,6 +27,7 @@ public class Country implements ICountry {
 	private Agents agents, backup;
 	private long randomBaseSeed;
 	private IInnovation innovation;
+//	private IInheritanceHandler handler;
 	private SimulationListeners listeners;
 
 	public Country(SimulationConfig config, SimulationListeners listeners) {
@@ -37,6 +38,8 @@ public class Country implements ICountry {
 		this.rand = new Random(config.getSeed());
 		this.agents = new Agents(listeners, rand.nextLong(), 1);
 		this.innovation = config.getInnovation();
+//		this.handler = config.getInheritanceHandler();
+//		assert this.handler != null;
 	}
 
 	public Good getMoney() {
@@ -55,6 +58,9 @@ public class Country implements ICountry {
 		// changes
 		this.rand = new Random(day ^ randomBaseSeed);
 		this.agents = this.agents.renew(rand.nextLong());
+	}
+	
+	public void startDay(IStatistics stats) {
 		this.handoutEndowments();
 		this.createFirms(stats);
 		this.listeners.notifyDayStarted(day);

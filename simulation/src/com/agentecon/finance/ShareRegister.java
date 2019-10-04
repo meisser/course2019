@@ -32,7 +32,7 @@ public class ShareRegister implements IRegister {
 	}
 
 	public void claimCompanyShares(Position owner) {
-		owner.transfer(rootPosition, rootPosition.getAmount() / 2);
+		owner.transfer(rootPosition, rootPosition.getAmount());
 	}
 
 	public double raiseCapital(IStockMarket dsm, IAgent owner, IStock wallet, double minAcceptableValuation) {

@@ -18,7 +18,7 @@ public class CustomConfiguration extends SimulationConfig {
 	private SimulationConfig delegate;
 
 	public CustomConfiguration() throws IOException {
-		this("com.agentecon.exercise3.MoneyConfiguration2");
+		this("com.agentecon.exercise2.Configuration");
 	}
 
 	public CustomConfiguration(String classname) throws IOException {

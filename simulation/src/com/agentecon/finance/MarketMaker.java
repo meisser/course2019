@@ -20,14 +20,12 @@ import com.agentecon.production.IPriceProvider;
 import com.agentecon.production.PriceUnknownException;
 import com.agentecon.util.Average;
 
-public class MarketMaker extends Firm implements IMarketMaker, IPriceProvider, IMarketParticipant {
+public class MarketMaker extends PortfolioFirm implements IMarketMaker, IPriceProvider, IMarketParticipant {
 
-	private Portfolio portfolio;
 	private HashMap<Ticker, MarketMaking> priceBeliefs;
 
 	public MarketMaker(IAgentIdGenerator id, IStock money) {
 		super(id, new Endowment(money));
-		this.portfolio = new Portfolio(getMoney(), false);
 		this.priceBeliefs = new HashMap<Ticker, MarketMaking>();
 	}
 
@@ -54,7 +52,7 @@ public class MarketMaker extends Firm implements IMarketMaker, IPriceProvider, I
 
 	public void notifyFirmCreated(IFirm firm) {
 		Position pos = firm.getShareRegister().createPosition(false);
-		portfolio.addPosition(pos);
+		getPortfolio().addPosition(pos);
 		MarketMaking price = createPriceBelief(getMoney(), pos);
 		MarketMaking prev = priceBeliefs.put(pos.getTicker(), price);
 		assert prev == null;
@@ -93,7 +91,7 @@ public class MarketMaker extends Firm implements IMarketMaker, IPriceProvider, I
 	public Average getAverageOwnershipShare() {
 		Average avg = new Average();
 		for (Ticker t : priceBeliefs.keySet()) {
-			Position pos = portfolio.getPosition(t);
+			Position pos = getPortfolio().getPosition(t);
 			avg.add(pos.getOwnershipShare());
 		}
 		return avg;
@@ -135,11 +133,6 @@ public class MarketMaker extends Firm implements IMarketMaker, IPriceProvider, I
 	@Override
 	public MarketMaker clone() {
 		return this; // TEMP todo
-	}
-
-	@Override
-	public Portfolio getPortfolio() {
-		return portfolio;
 	}
 
 	@Override

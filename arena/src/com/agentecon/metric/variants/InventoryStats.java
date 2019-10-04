@@ -13,6 +13,7 @@ import com.agentecon.goods.IStock;
 import com.agentecon.goods.Inventory;
 import com.agentecon.market.IMarket;
 import com.agentecon.market.IMarketListener;
+import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.metric.SimStats;
 import com.agentecon.metric.series.TimeSeries;
 import com.agentecon.metric.series.TimeSeriesCollector;
@@ -46,13 +47,13 @@ public class InventoryStats extends SimStats {
 			}
 
 			@Override
-			public void notifyMarketClosed(int day) {
-				InventoryStats.this.notifyMarketClosed(day);
+			public void notifyMarketClosed(int day, IPriceTakerMarket market) {
+				InventoryStats.this.notifyMarketClosed(day, market);
 			}
 		});
 	}
 
-	public void notifyMarketClosed(int day) {
+	public void notifyMarketClosed(int day, IPriceTakerMarket market) {
 		IAgents agents = getAgents();
 		for (IAgent ag : agents.getAgents()) {
 			Inventory inv = ag.getInventory();

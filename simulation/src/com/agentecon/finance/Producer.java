@@ -24,17 +24,19 @@ public abstract class Producer extends Firm implements IProducer {
 	private ProducerListeners listeners;
 
 	public Producer(IAgentIdGenerator id, IShareholder owner, IProductionFunction prodFun, Good money) {
-		super(id, owner, new Endowment(money));
+		this(id, owner, prodFun, new Endowment(money));
+	}
+
+	public Producer(IAgentIdGenerator id, IShareholder owner, IProductionFunction prodFun, Endowment end) {
+		super(id, owner, end);
 		this.production = prodFun;
 		this.listeners = new ProducerListeners();
 	}
-	
-	public Producer(IAgentIdGenerator id, Endowment end, IProductionFunction prodFun) {
-		super(id, end);
-		this.production = prodFun;
-		this.listeners = new ProducerListeners();
+
+	public Producer(IAgentIdGenerator id, IProductionFunction prodFun, Endowment end) {
+		this(id, null, prodFun, end);
 	}
-	
+
 	protected IProductionFunction getProductionFunction() {
 		return production;
 	}

@@ -45,14 +45,6 @@ public abstract class RemoteLoader extends ClassLoader {
 		}
 	}
 
-	@Deprecated
-	public void registerSubloader(RemoteLoader loader) {
-		synchronized (subLoaderCache) {
-			RemoteLoader prev = subLoaderCache.put(loader.getSource(), loader);
-			assert prev == null || prev == loader;
-		}
-	}
-
 	protected byte[] loadBytecode(String classname) throws ClassNotFoundException {
 		throw new ClassNotFoundException(classname);
 	}

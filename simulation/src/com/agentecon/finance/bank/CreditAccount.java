@@ -1,4 +1,4 @@
-package com.agentecon.finance.credit;
+package com.agentecon.finance.bank;
 
 import com.agentecon.goods.AbstractStockWrapper;
 import com.agentecon.goods.IStock;

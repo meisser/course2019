@@ -41,5 +41,9 @@ public Collection<? extends IAgent> getAgents();
 	public default Collection<Inheritance> getPendingInheritances(){
 		return Collections.emptyList();
 	}
+	
+//	public default void distributeInheritanceToNewborns(Inheritance left) {
+//		throw new RuntimeException("not implemented");
+//	}
 
 }

@@ -38,11 +38,11 @@ public class Farm extends Producer {
 	}
 	
 	public Farm(IAgentIdGenerator id, Endowment end, IProductionFunction prodFun) {
-		this(id, end, prodFun, null);
+		this(id, null, prodFun, end, null);
 	}
 
-	public Farm(IAgentIdGenerator id, Endowment end, IProductionFunction prodFun, IStatistics stats) {
-		super(id, end, prodFun);
+	public Farm(IAgentIdGenerator id, IShareholder owner, IProductionFunction prodFun, Endowment end, IStatistics stats) {
+		super(id, owner, prodFun, end);
 		this.strategy = new ExpectedRevenueBasedStrategy((CobbDouglasProduction)prodFun);
 		this.marketing = new MarketingDepartment(getMoney(), stats == null ? null : stats.getGoodsMarketStats(), getStock(FarmingConfiguration.MAN_HOUR), getStock(FarmingConfiguration.POTATOE));
 	}

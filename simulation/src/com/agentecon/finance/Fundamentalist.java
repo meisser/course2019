@@ -9,30 +9,27 @@ import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.firm.IRegister;
 import com.agentecon.firm.IShareholder;
 import com.agentecon.firm.IStockMarket;
-import com.agentecon.firm.Portfolio;
 import com.agentecon.firm.Position;
 import com.agentecon.firm.Ticker;
 import com.agentecon.goods.IStock;
 import com.agentecon.market.Bid;
 
-public class Fundamentalist extends Firm implements IShareholder {
+public class Fundamentalist extends PortfolioFirm {
 	
 	private static final boolean ALLOWED_TO_BUY_OTHER_FUNDAMENTALISTS = true;
 
 	private static final double CASH_RESERVES = 1000;
 
 	private double reserve;
-	private Portfolio portfolio;
-
+	
 	public Fundamentalist(IAgentIdGenerator world, Endowment end) {
 		super(world, end);
-		this.portfolio = new Portfolio(getMoney(), false);
 	}
 
 	private double calcInnerValue(IStockMarket dsm) {
 		double innerValue = getMoney().getAmount();
 		YieldComparator yieldComp2 = new YieldComparator(dsm, false);
-		for (Position pos : portfolio.getPositions()) {
+		for (Position pos : getPortfolio().getPositions()) {
 			if (dsm.hasBid(pos.getTicker())) {
 				innerValue += yieldComp2.getPrice(pos.getTicker()) * pos.getAmount();
 			}
@@ -65,11 +62,11 @@ public class Fundamentalist extends Firm implements IShareholder {
 	protected void sellBadShares(IStock money, IStockMarket dsm, PriorityQueue<Ticker> queue, int count) {
 		for (int i = 0; i < count; i++) {
 			Ticker pc = queue.poll();
-			Position pos = portfolio.getPosition(pc);
+			Position pos = getPortfolio().getPosition(pc);
 			if (pos != null && !pos.isEmpty()) {
 				dsm.sell(this, pos, money, pos.getAmount());
 				if (pos.isEmpty()) {
-					portfolio.disposePosition(pos.getTicker());
+					getPortfolio().disposePosition(pos.getTicker());
 				}
 			}
 		}
@@ -79,9 +76,9 @@ public class Fundamentalist extends Firm implements IShareholder {
 		ArrayList<Ticker> list = new ArrayList<>(queue);
 		for (int i = list.size() - 1; i >= 0 && !money.isEmpty(); i--) {
 			Ticker pc = list.get(i);
-			Position pos = portfolio.getPosition(pc);
+			Position pos = getPortfolio().getPosition(pc);
 			Position pos2 = dsm.buy(this, pc, pos, money, money.getAmount());
-			portfolio.addPosition(pos2);
+			getPortfolio().addPosition(pos2);
 		}
 	}
 
@@ -96,7 +93,7 @@ public class Fundamentalist extends Firm implements IShareholder {
 	}
 
 	protected Ticker findWorstPosition(IStockMarket dsm) {
-		Collection<Position> pos = portfolio.getPositions();
+		Collection<Position> pos = getPortfolio().getPositions();
 		if (pos.isEmpty()) {
 			return null;
 		} else {
@@ -142,15 +139,6 @@ public class Fundamentalist extends Firm implements IShareholder {
 	@Override
 	public Fundamentalist clone() {
 		return this; // TEMP todo
-	}
-
-	@Override
-	public Portfolio getPortfolio() {
-		return portfolio;
-	}
-
-	public String toString() {
-		return getTicker() + " with " + portfolio;
 	}
 
 }

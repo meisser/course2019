@@ -80,7 +80,7 @@ public class Average implements Cloneable, IAverage {
 	}
 
 	public String toFullString() {
-		return getAverage() + " (min " + getMin() + ", max " + getMax() + ")";
+		return getAverage() + " (variance " + getVariance() + ")";
 	}
 
 	@Override

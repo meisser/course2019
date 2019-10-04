@@ -38,6 +38,16 @@ public class SimulationConfig implements IDiscountRate {
 		this.marketRetries = wobbles;
 	}
 	
+//	public IInheritanceHandler getInheritanceHandler() {
+//		return new IInheritanceHandler() {
+//			
+//			@Override
+//			public void handleInheritance(IAgents agents, Inheritance inh) {
+//				agents.distributeInheritanceToNewborns(inh);
+//			}
+//		};
+//	}
+	
 	public Good getMoney(){
 		return MONEY;
 	}

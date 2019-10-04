@@ -20,6 +20,7 @@ import com.agentecon.goods.Good;
 import com.agentecon.goods.Inventory;
 import com.agentecon.market.IMarket;
 import com.agentecon.market.IMarketListener;
+import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.metric.SimStats;
 import com.agentecon.metric.series.AveragingTimeSeries;
 import com.agentecon.metric.series.Chart;
@@ -111,7 +112,7 @@ public class StockMarketStats extends SimStats implements IMarketListener, ICons
 	}
 
 	@Override
-	public void notifyMarketClosed(int day) {
+	public void notifyMarketClosed(int day, IPriceTakerMarket market) {
 		investments.pushSum(day);
 		divestments.pushSum(day);
 		difference.pushSum(day);

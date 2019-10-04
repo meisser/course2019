@@ -10,6 +10,7 @@ import com.agentecon.ISimulation;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.market.IMarket;
 import com.agentecon.market.IMarketListener;
+import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.market.IStatistics;
 import com.agentecon.metric.SimStats;
 import com.agentecon.metric.series.AveragingTimeSeries;
@@ -109,7 +110,7 @@ public class Equality extends SimStats implements IMarketListener {
 	}
 
 	@Override
-	public void notifyMarketClosed(int day) {
+	public void notifyMarketClosed(int day, IPriceTakerMarket market) {
 		// Calculate wealth after market close so goods that will be consumed soon are included
 		IStatistics stats = getStats();
 		List<List<GiniData>> data = getCollections(c -> c.getWealth(stats), STEP);
