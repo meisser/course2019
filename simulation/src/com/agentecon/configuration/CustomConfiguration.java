@@ -2,6 +2,7 @@ package com.agentecon.configuration;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.SocketTimeoutException;
 import java.util.Collection;
 
@@ -31,8 +32,10 @@ public class CustomConfiguration extends SimulationConfig {
 			// use same source as parent
 			SimulationHandle handle = parent.getSource().copy(false);
 			ClassLoader loader = findLoader(parent, handle);
-			delegate = (SimulationConfig) loader.loadClass(className).newInstance();
+			delegate = (SimulationConfig) loader.loadClass(className).getDeclaredConstructor().newInstance();
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
 	}
