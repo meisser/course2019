@@ -45,8 +45,8 @@ public class Simulation implements ISimulation, IStatistics, IIteratedSimulation
 	private MarketStatistics goodsMarketStats;
 
 	public Simulation() throws IOException {
-		this(new CustomConfiguration());
-//		this(new BasicEconomyConfiguration(534, true));
+//		this(new CustomConfiguration());
+		this(new BasicEconomyConfiguration(535, true));
 	}
 	
 	public Simulation(IConfiguration metaConfig) {
