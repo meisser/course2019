@@ -13,6 +13,7 @@ import com.agentecon.consumer.IUtility;
 import com.agentecon.events.SimEvent;
 import com.agentecon.finance.bank.EqualDistribution;
 import com.agentecon.finance.bank.IDistributionPolicy;
+import com.agentecon.finance.bank.InterestDistribution;
 import com.agentecon.goods.Inventory;
 import com.agentecon.util.Average;
 import com.agentecon.world.ICountry;

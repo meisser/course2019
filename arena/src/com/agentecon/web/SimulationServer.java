@@ -67,7 +67,7 @@ public class SimulationServer extends VisServer {
 				// note that we cannot refresh the main simulation alone, as the classes loaded by the sub class
 				// loaders still refer to classes loaded by the main one
 			} else {
-				new LocalSimulationUpdater(this.simulations).start();
+				new LocalSimulationUpdater(this.simulations, LocalSimulationHandle.REPO_NAME).start();
 			}
 		}
 

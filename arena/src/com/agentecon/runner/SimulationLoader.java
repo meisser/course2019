@@ -34,7 +34,7 @@ public class SimulationLoader {
 			if (remote.refreshSubloaders()) {
 				this.classLoader = remote;
 			} else {
-				throw new NothingChangedException();
+				throw new NothingChangedException("No changes in relevant files found");
 			}
 		} else {
 			// Do not recycle the sub-loaders, as their loaded classes still

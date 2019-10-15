@@ -57,7 +57,7 @@ public class SimulationStepper {
 			System.out.println("Refreshed " + this);
 			return newstepper;
 		} else {
-			throw new NothingChangedException();
+			throw new NothingChangedException("No relevant repo affected");
 		}
 	}
 

@@ -61,6 +61,7 @@ public class ListMethod extends WebApiMethod {
 
 			@Override
 			public void accept(SimulationHandle t, SimulationStepper u) {
+				System.out.println("Updating simulation " + t);
 				simulationUpdateExecutor.execute(new Runnable() {
 
 					@Override
@@ -75,6 +76,7 @@ public class ListMethod extends WebApiMethod {
 							} catch (IOException e) {
 								e.printStackTrace();
 							} catch (NothingChangedException e) {
+								System.out.println("No relevant change found for simulation " + t + " in repo " + repo + ": " + e.getMessage());
 								// good, no need to update
 							}
 						} catch (InterruptedException e) {
