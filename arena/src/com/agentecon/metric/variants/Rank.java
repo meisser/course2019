@@ -23,13 +23,13 @@ public class Rank implements Comparable<Rank> {
 
 	public Rank(String type, Agent agent) {
 		this.type = type;
-//		this.version = agent.getVersion();
-//		URL source = agent.getSourceUrl();
-//		if (source == null) {
-//			url = "local";
-//		} else {
-//			url = source.toExternalForm();
-//		}
+		this.version = agent.getVersion();
+		URL source = agent.getSourceUrl();
+		if (source == null) {
+			url = "local";
+		} else {
+			url = source.toExternalForm();
+		}
 	}
 	
 	public void roundScore() {
