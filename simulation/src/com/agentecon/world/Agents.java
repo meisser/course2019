@@ -131,6 +131,7 @@ public class Agents implements IAgents, IAgentIdGenerator {
 		include(agent, true);
 	}
 
+	@SuppressWarnings("unused")
 	private void include(Agent agent, boolean newAgent) {
 		Agent prev = all.put(agent.getAgentId(), agent);
 		assert prev == null : "Cannot register " + agent + " because there already is another agent with that id: " + prev;
@@ -169,7 +170,7 @@ public class Agents implements IAgents, IAgentIdGenerator {
 			IConsumer consumer = (IConsumer) agent;
 			consumers.add(consumer);
 			consumerTypes.add(agent.getType());
-			if (newAgent && !pendingInheritances.isEmpty()) {
+			if (newAgent && !pendingInheritances.isEmpty() && SINGLE_HEIR_MODE) {
 				consumer.inherit(pendingInheritances.remove(0));
 			}
 		}
