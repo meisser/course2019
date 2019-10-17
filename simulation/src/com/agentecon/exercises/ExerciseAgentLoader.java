@@ -30,7 +30,7 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
 	public static final String DEFAULT_REPO = "course2019";
 
-	public static final Collection<String> TEAMS = createRepos(2, 1, 2, 3, 5, 6, 7, 8, 10);
+	public static final Collection<String> TEAMS = createRepos(2, 1, 2, 3, 5, 7, 8, 10);
 
 	public ExerciseAgentLoader(String classname) throws SocketTimeoutException, IOException {
 		this(classname, SimulationConfig.shouldLoadRemoteTeams());

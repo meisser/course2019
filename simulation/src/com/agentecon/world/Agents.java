@@ -242,6 +242,8 @@ public class Agents implements IAgents, IAgentIdGenerator {
 		} else {
 			Inheritance fraction = inheritance.getFraction(DISTRIBUTION_FRACTION);
 			fraction.distributeEvenly(consumers);
+			this.pendingInheritances.add(inheritance);
+			this.shareholders.add(inheritance);
 		}
 	}
 
