@@ -27,6 +27,7 @@ import com.agentecon.sim.ISimulationListener;
 public class Agents implements IAgents, IAgentIdGenerator {
 
 	private static final boolean SINGLE_HEIR_MODE = false;
+	private static final double DISTRIBUTION_FRACTION = 0.05;
 
 	private long seed;
 	private Random rand;
@@ -239,11 +240,8 @@ public class Agents implements IAgents, IAgentIdGenerator {
 			this.pendingInheritances.add(inheritance);
 			this.shareholders.add(inheritance);
 		} else {
-			double sharePerConsumer = 1.0 / consumers.size();
-			for (IConsumer consumer : consumers) {
-				consumer.inherit(inheritance.getFraction(sharePerConsumer));
-			}
-			consumers.iterator().next().inherit(inheritance);
+			Inheritance fraction = inheritance.getFraction(DISTRIBUTION_FRACTION);
+			fraction.distributeEvenly(consumers);
 		}
 	}
 

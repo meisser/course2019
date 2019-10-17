@@ -7,7 +7,7 @@ import com.agentecon.market.IPriceTakerMarket;
 
 public class BufferingMortalConsumer extends MortalConsumer {
 	
-	private static final double CAPITAL_BUFFER = 0.2;
+	private static final double CAPITAL_BUFFER = 0.5;
 	public static final double MINIMUM_WORKING_HOURS = 5;
 
 	public BufferingMortalConsumer(IAgentIdGenerator id, int maxAge, Endowment end, IUtility utility) {
