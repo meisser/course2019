@@ -10,7 +10,6 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import com.agentecon.agent.IAgents;
 import com.agentecon.configuration.BasicEconomyConfiguration;
-import com.agentecon.configuration.CustomConfiguration;
 import com.agentecon.configuration.IConfiguration;
 import com.agentecon.events.SimEvent;
 import com.agentecon.finance.StockMarket;
@@ -26,7 +25,6 @@ import com.agentecon.sim.ISimulationListener;
 import com.agentecon.sim.SimulationConfig;
 import com.agentecon.sim.SimulationListeners;
 import com.agentecon.util.Average;
-import com.agentecon.util.Numbers;
 import com.agentecon.world.Country;
 
 // The world
@@ -46,7 +44,7 @@ public class Simulation implements ISimulation, IStatistics, IIteratedSimulation
 
 	public Simulation() throws IOException {
 //		this(new CustomConfiguration());
-		this(new BasicEconomyConfiguration(535, true));
+		this(new BasicEconomyConfiguration(535647, true));
 	}
 	
 	public Simulation(IConfiguration metaConfig) {

@@ -29,7 +29,6 @@ import com.agentecon.exercises.ExerciseAgentLoader;
 import com.agentecon.exercises.HermitConfiguration;
 import com.agentecon.finance.Firm;
 import com.agentecon.finance.bank.CentralBank;
-import com.agentecon.finance.bank.EqualDistribution;
 import com.agentecon.finance.bank.IDistributionPolicy;
 import com.agentecon.finance.bank.InterestDistribution;
 import com.agentecon.firm.Farm;
@@ -45,11 +44,11 @@ import com.agentecon.world.ICountry;
 
 public class BasicEconomyConfiguration extends SimulationConfig implements IUtilityFactory {
 
-	private static final int LIFE_EXPECTANCY = 100;
-	private static final int STUDENTS_START = 100;
-	private static final int BIRTH_PER_DAY = 1;
-	private static final int STUDENT_AGENTS = 500;
-	private static final int FARMS = 5;
+	public static final int LIFE_EXPECTANCY = 100;
+	public static final int STUDENTS_START = 100;
+	public static final int BIRTH_PER_DAY = 1;
+	public static final int STUDENT_AGENTS = 500;
+	public static final int FARMS = 5;
 
 	public static final Good MAN_HOUR = HermitConfiguration.MAN_HOUR;
 	public static final Good POTATOE = HermitConfiguration.POTATOE;
@@ -57,12 +56,12 @@ public class BasicEconomyConfiguration extends SimulationConfig implements IUtil
 	public static final Quantity FIXED_COSTS = HermitConfiguration.FIXED_COSTS;
 
 	private Ticker centralBank;
-	private boolean competitive;
+	private boolean randomizedDemographics;
 	private IAgentFactory factory;
 
-	public BasicEconomyConfiguration(int seed, boolean competitive) throws SocketTimeoutException, IOException {
-		super(competitive ? calculateRounds(seed) : STUDENTS_START + STUDENT_AGENTS / BIRTH_PER_DAY + LIFE_EXPECTANCY, seed + 133);
-		this.competitive = competitive;
+	public BasicEconomyConfiguration(int seed, boolean randomizedDemographics) throws SocketTimeoutException, IOException {
+		super(randomizedDemographics ? calculateRounds(seed) : STUDENTS_START + STUDENT_AGENTS / BIRTH_PER_DAY + LIFE_EXPECTANCY, seed + 133);
+		this.randomizedDemographics = randomizedDemographics;
 		this.factory = new ExerciseAgentLoader("com.agentecon.exercise2.GeneralConsumer");
 		int expectedPopulation = LIFE_EXPECTANCY * BIRTH_PER_DAY;
 		IStock[] dailyEndowment = new IStock[] { new Stock(MAN_HOUR, HermitConfiguration.DAILY_ENDOWMENT) };
@@ -104,18 +103,18 @@ public class BasicEconomyConfiguration extends SimulationConfig implements IUtil
 	}
 
 	protected IDistributionPolicy getDistributionPolicy() {
-		return competitive ? new InterestDistribution() : new EqualDistribution();
+		return new InterestDistribution();
 	}
 
 	private void createPopulation(Endowment e, int initialAgents, int seed) {
-		LifeClock normalConsumerClock = new LifeClock(LIFE_EXPECTANCY, seed + 123123, competitive);
+		LifeClock normalConsumerClock = new LifeClock(LIFE_EXPECTANCY, seed + 123123, randomizedDemographics);
 		addEvent(new ConsumerEvent(initialAgents, e, this) {
 
 			private int maxAge = 1;
 
 			@Override
 			protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
-				if (competitive) {
+				if (randomizedDemographics) {
 					return new BufferingMortalConsumer(id, normalConsumerClock.getRandomLifeLength(), end, util);
 				} else {
 					return new BufferingMortalConsumer(id, maxAge++, end, util);
@@ -125,7 +124,7 @@ public class BasicEconomyConfiguration extends SimulationConfig implements IUtil
 		addEvent(new ConsumerEvent(1, BIRTH_PER_DAY, 1, e, this) {
 
 			private int count = 0;
-			private LifeClock clock = new LifeClock(LIFE_EXPECTANCY, seed, competitive);
+			private LifeClock clock = new LifeClock(LIFE_EXPECTANCY, seed, randomizedDemographics);
 
 			@Override
 			protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
@@ -136,14 +135,14 @@ public class BasicEconomyConfiguration extends SimulationConfig implements IUtil
 				}
 			}
 		});
-		if (!competitive) {
-			addEvent(new ConsumerEvent(STUDENTS_START + LIFE_EXPECTANCY, 1, 0, e, this) {
-				@Override
-				protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
-					return createIndividualTestConsumer(id, LIFE_EXPECTANCY, end, util);
-				}
-			});
-		}
+//		if (!randomizedDemographics) {
+//			addEvent(new ConsumerEvent(STUDENTS_START + LIFE_EXPECTANCY + 73, 1, 0, e, this) {
+//				@Override
+//				protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
+//					return createIndividualTestConsumer(id, LIFE_EXPECTANCY, end, util);
+//				}
+//			});
+//		}
 	}
 	
 	protected IConsumer createGeneralConsumer(IAgentIdGenerator id, int maxAge, Endowment end, IUtility util) {

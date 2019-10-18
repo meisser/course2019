@@ -12,7 +12,7 @@ public class Inheritance implements IShareholder {
 
 	private Inventory inventory;
 	private Portfolio portfolio;
-	
+
 	public Inheritance(Inheritance parent, double ratio, boolean consumer) {
 		this.inventory = new Inventory(parent.inventory.getMoney().getGood());
 		this.inventory.absorb(ratio, parent.inventory);
@@ -43,11 +43,15 @@ public class Inheritance implements IShareholder {
 	}
 
 	public Inheritance getFraction(double share) {
-		Inventory inv = new Inventory(inventory.getMoney().getGood());
-		inv.absorb(share, this.inventory);
-		Portfolio port = new Portfolio(inv.getMoney(), false);
-		port.absorbPositions(share, portfolio);
-		return new Inheritance(inv, port);
+		if (share == 1.0) {
+			return this;
+		} else {
+			Inventory inv = new Inventory(inventory.getMoney().getGood());
+			inv.absorb(share, this.inventory);
+			Portfolio port = new Portfolio(inv.getMoney(), false);
+			port.absorbPositions(share, portfolio);
+			return new Inheritance(inv, port);
+		}
 	}
 
 	@Override
@@ -72,7 +76,7 @@ public class Inheritance implements IShareholder {
 		}
 		consumers.get(consumers.size() - 1).inherit(this);
 	}
-	
+
 	@Override
 	public String toString() {
 		return inventory.toString() + " " + portfolio.toString();
