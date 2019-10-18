@@ -32,5 +32,11 @@ public class ConsumerListeners extends AbstractListenerList<IConsumerListener> i
 			l.notifyDivested(inst, amount);
 		}
 	}
-
+	
+	@Override
+	public void notifyDied(IConsumer inst) {
+		for (IConsumerListener l: list){
+			l.notifyDied(inst);
+		}
+	}
 }

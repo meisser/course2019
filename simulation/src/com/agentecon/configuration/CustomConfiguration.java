@@ -9,6 +9,7 @@ import java.util.Collection;
 import com.agentecon.ISimulation;
 import com.agentecon.classloader.RemoteLoader;
 import com.agentecon.classloader.SimulationHandle;
+import com.agentecon.finance.IInterest;
 import com.agentecon.goods.Good;
 import com.agentecon.research.IInnovation;
 import com.agentecon.sim.Event;
@@ -72,6 +73,11 @@ public class CustomConfiguration extends SimulationConfig {
 	@Override
 	public int getRounds() {
 		return delegate.getRounds();
+	}
+	
+	@Override
+	public IInterest getInterest() {
+		return delegate.getInterest();
 	}
 
 	@Override

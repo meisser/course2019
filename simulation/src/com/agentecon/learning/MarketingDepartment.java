@@ -17,6 +17,8 @@ import com.agentecon.production.IProductionFunction;
 import com.agentecon.production.PriceUnknownException;
 
 public class MarketingDepartment implements IPriceProvider {
+	
+	private static final double SALES_FRACTION = 0.1;
 
 	private IStock money;
 	private InputFactor input;
@@ -53,7 +55,7 @@ public class MarketingDepartment implements IPriceProvider {
 
 	public void createOffers(IPriceMakerMarket market, IAgent initiator, double budget) {
 		input.createOffers(market, initiator, money, budget);
-		output.createOffers(market, initiator, money, output.getStock().getAmount() * 0.1);
+		output.createOffers(market, initiator, money, output.getStock().getAmount() * SALES_FRACTION);
 	}
 
 	public void adaptPrices() {
@@ -81,6 +83,11 @@ public class MarketingDepartment implements IPriceProvider {
 				} catch (PriceUnknownException e) {
 					throw new RuntimeException(e);
 				}
+			}
+			
+			@Override
+			public double getExpectedRevenue() {
+				return super.getExpectedRevenue() * SALES_FRACTION;
 			}
 
 		};

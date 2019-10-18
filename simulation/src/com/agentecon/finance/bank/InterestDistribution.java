@@ -6,7 +6,7 @@ import com.agentecon.consumer.IConsumer;
 import com.agentecon.goods.IStock;
 
 public class InterestDistribution extends EqualDistribution {
-	
+
 	private double latestDistributionAmount;
 	private double latestWealthBase;
 
@@ -21,7 +21,7 @@ public class InterestDistribution extends EqualDistribution {
 				assert c.isAlive();
 				IStock consumerWallet = c.getMoney();
 				double distribution = consumerWallet.getAmount() / totalMoney * available;
-				consumerWallet.transfer(wallet, distribution);
+				c.receiveInterest(wallet, distribution);
 			}
 		} else {
 			// if everyone has 0 wealth, distribute evenly
@@ -36,11 +36,15 @@ public class InterestDistribution extends EqualDistribution {
 		}
 		return total;
 	}
-	
+
 	public double getImpliedInterest() {
-		return latestDistributionAmount / latestWealthBase;
+		if (latestWealthBase > 0.0) {
+			return latestDistributionAmount / latestWealthBase;
+		} else {
+			return 0.0;
+		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Distributed " + latestDistributionAmount + " on " + latestWealthBase + " which implies an interest of " + getImpliedInterest();

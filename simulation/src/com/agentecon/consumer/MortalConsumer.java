@@ -28,6 +28,7 @@ public class MortalConsumer extends Consumer {
 		Inheritance inh = super.considerDeath();
 		assert inh == null; // super is immortal and should never return an inheritance
 		if (getAge() > maxAge) {
+			listeners.notifyDied(this);
 			Inventory inv = super.dispose();
 			Portfolio portfolio = new Portfolio(inv.getMoney(), true);
 			portfolio.absorb(getPortfolio());

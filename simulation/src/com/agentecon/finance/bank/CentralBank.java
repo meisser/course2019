@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.agentecon.agent.Endowment;
 import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.consumer.IConsumer;
-import com.agentecon.consumer.Inheritance;
 import com.agentecon.finance.PortfolioFirm;
 import com.agentecon.firm.IStockMarket;
 import com.agentecon.goods.IStock;

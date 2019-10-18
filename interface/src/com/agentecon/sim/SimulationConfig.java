@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import com.agentecon.ISimulation;
 import com.agentecon.agent.Agent;
+import com.agentecon.finance.IInterest;
 import com.agentecon.goods.Good;
 import com.agentecon.market.IDiscountRate;
 import com.agentecon.research.IInnovation;
@@ -36,6 +37,10 @@ public class SimulationConfig implements IDiscountRate {
 		this.seed = seed;
 		this.rounds = rounds;
 		this.marketRetries = wobbles;
+	}
+	
+	public IInterest getInterest() {
+		return null;
 	}
 	
 //	public IInheritanceHandler getInheritanceHandler() {

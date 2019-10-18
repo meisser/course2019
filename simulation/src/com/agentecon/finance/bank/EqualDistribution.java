@@ -15,7 +15,7 @@ public class EqualDistribution implements IDistributionPolicy {
 		double distributionPerConsumer = wallet.getAmount() / consumers.size();
 		for (IConsumer c : consumers) {
 			assert c.isAlive();
-			c.getMoney().transfer(wallet, distributionPerConsumer);
+			c.receiveInterest(wallet, distributionPerConsumer);
 		}
 	}
 	

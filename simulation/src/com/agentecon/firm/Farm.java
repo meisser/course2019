@@ -24,7 +24,7 @@ import com.agentecon.production.IProductionFunction;
 import com.agentecon.production.PriceUnknownException;
 
 public class Farm extends Producer {
-
+	
 	private IFirmDecisions strategy;
 	private MarketingDepartment marketing;
 

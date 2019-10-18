@@ -3,6 +3,7 @@
 package com.agentecon.consumer;
 
 import com.agentecon.agent.IAgent;
+import com.agentecon.goods.IStock;
 
 public interface IConsumer extends IAgent, IMarketParticipant {
 	
@@ -38,6 +39,10 @@ public interface IConsumer extends IAgent, IMarketParticipant {
 	public IUtility getUtilityFunction();
 	
 	public void addListener(IConsumerListener listener);
+
+	public default void receiveInterest(IStock wallet, double distributionPerConsumer) {
+		getMoney().transfer(wallet, distributionPerConsumer);
+	}
 
 	
 }
