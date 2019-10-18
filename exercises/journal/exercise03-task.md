@@ -8,4 +8,4 @@ Find an adaptive method that allows the [DiscountingConsumer](../src/com/agentec
 
 ## Deadline
 
-The deadline for submitting your agents and the lab journal to github is 2019-10-23 at 24:00.
+The deadline for submitting your agents and the lab journal to github is 2019-10-24 at 24:00.
