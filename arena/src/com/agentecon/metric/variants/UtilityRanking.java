@@ -122,7 +122,7 @@ public class UtilityRanking extends SimStats {
 
 		public ConsumerListener(IConsumer agent) {
 			this.agent = agent.getReference();
-			this.averageUtility = /* agent.isMortal() ? new Average() : */new MovingAverage(0.98);
+			this.averageUtility = /* agent.isMortal() ? new Average() : */new MovingAverage(0.8);
 		}
 
 		public boolean isAlive() {

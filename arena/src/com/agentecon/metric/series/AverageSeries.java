@@ -16,8 +16,7 @@ public class AverageSeries {
 	}
 
 	public void add(int time, double value) {
-		if (time >= data.size()) {
-			assert time == data.size();
+		while (data.size() <= time) {
 			data.add(new Average());
 		}
 		data.get(time).add(value);
