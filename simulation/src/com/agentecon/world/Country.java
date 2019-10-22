@@ -119,11 +119,11 @@ public class Country implements ICountry {
 	public void finishDay(IStatistics stats) {
 		consume();
 
+		listeners.notifyDayEnded(stats); // was last line in previous versions (pre Oct 2019)
+		
 		dismantleFirms(stats);
 
 		handleDeath();
-
-		listeners.notifyDayEnded(stats);
 	}
 
 	protected void consume() {
