@@ -26,14 +26,16 @@ public class AverageSeries {
 		TimeSeries ts = new TimeSeries(name, data.size());
 		int pos = 0;
 		for (Average avg : data) {
-			ts.set(pos++, avg.getAverage());
+			if (avg.hasValue()) {
+				ts.set(pos++, avg.getAverage());
+			}
 		}
 		return ts;
 	}
 
 	public static Collection<TimeSeries> unwrap(Collection<AverageSeries> values) {
 		ArrayList<TimeSeries> series = new ArrayList<TimeSeries>();
-		for (AverageSeries avg: values) {
+		for (AverageSeries avg : values) {
 			series.add(avg.consolidate());
 		}
 		return series;
