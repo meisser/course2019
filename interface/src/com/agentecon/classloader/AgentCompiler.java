@@ -43,9 +43,19 @@ public class AgentCompiler implements DiagnosticListener<JavaFileObject> {
 			if (byteCode == null) {
 				JavaFileObject object = manager.getJavaFileForInput(StandardLocation.SOURCE_PATH, name, Kind.SOURCE);
 				System.out.println("Compiling " + name);
-				boolean success = this.compiler.getTask(null, manager, this, Arrays.asList("-cp", "loaded.jar", "-g"),
+				String[] msg = new String[] {""};
+				boolean success = this.compiler.getTask(null, manager, new DiagnosticListener<JavaFileObject>() {
+
+					@Override
+					public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
+						msg[0] += diagnostic.toString();
+						AgentCompiler.this.report(diagnostic);
+					}
+				}, Arrays.asList("-cp", "loaded.jar", "-g"),
 						null, Collections.singleton(object)).call();
-				assert success;
+				if (!success) {
+					throw new ClassNotFoundException(msg[0]);
+				}
 				byteCode = manager.getByteCode(name);
 			}
 			assert byteCode != null;

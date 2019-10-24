@@ -52,6 +52,7 @@ public abstract class RemoteLoader extends ClassLoader {
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		byte[] data = getByteCodeSource(name).getData();
+		assert data != null : "Should have thrown a class not found exception for " + name;
 		return super.defineClass(name, data, 0, data.length);
 	}
 
