@@ -26,6 +26,7 @@ import com.agentecon.metric.variants.OwnershipStats;
 import com.agentecon.metric.variants.ProductionDetailStats;
 import com.agentecon.metric.variants.ProductionStats;
 import com.agentecon.metric.variants.StockMarketStats;
+import com.agentecon.metric.variants.SynchronizedUtility;
 import com.agentecon.metric.variants.TypeStatistics;
 import com.agentecon.metric.variants.UtilityRanking;
 import com.agentecon.metric.variants.UtilityStats;
@@ -34,9 +35,9 @@ import com.agentecon.web.query.AgentQuery;
 
 public enum EMetrics {
 	
-	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, DIVIDENDS_TO_CONSUMERS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, WEALTH, TYPE;
+	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, DIVIDENDS_TO_CONSUMERS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH, TYPE;
 	
-	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {DEMOGRAPHICS, TYPE, INVENTORY, CASH, TOTAL_DIVIDENDS, INTEREST, PRODUCTION, PRODUCTION_DETAILS, MARKET, MONETARY, UTILITY, RANKING_CONSUMERS};
+	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {DEMOGRAPHICS, TYPE, INVENTORY, CASH, TOTAL_DIVIDENDS, INTEREST, PRODUCTION, PRODUCTION_DETAILS, MARKET, MONETARY, UTILITY, UTILITY_SYNCHRONIZED, RANKING_CONSUMERS};
 
 	public SimStats createAndRegister(ISimulation sim, List<String> list, boolean details) {
 		ArrayList<AgentQuery> queries = new ArrayList<>();
@@ -86,7 +87,9 @@ public enum EMetrics {
 		case PRODUCTION_DETAILS:
 			return "Production volume of individual firms.";
 		case STOCKMARKET:
-			return "Various stock market statistics: average prices, trading volumes, inflows, outflows, etc."; 
+			return "Various stock market statistics: average prices, trading volumes, inflows, outflows, etc.";
+		case UTILITY_SYNCHRONIZED:
+			return "Average daily utility of each consumer type over the course of their life span. (x-axis is age and not time)";
 		case UTILITY:
 			return "Daily average utility, as well as the minimum and maximum experienced by an agent.";
 		case TYPE:
@@ -138,7 +141,9 @@ public enum EMetrics {
 		case RANKING_FIRMS:
 			return new FirmRanking(sim, true);
 		case UTILITY:
-			return new UtilityStats(sim);
+			return new UtilityStats(sim, details);
+		case UTILITY_SYNCHRONIZED:
+			return new SynchronizedUtility(sim, details);
 		case TYPE:
 			return new TypeStatistics(sim);
 //		case VALUATION:

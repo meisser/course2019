@@ -58,10 +58,6 @@ public class AveragingTimeSeries {
 		return series;
 	}
 
-	public String toString() {
-		return series.toString();
-	}
-
 	public double getCurrent() {
 		return weight == 0.0 ? 0.0 : tot / weight;
 	}
@@ -72,6 +68,11 @@ public class AveragingTimeSeries {
 			list.add(ats.getTimeSeries());
 		}
 		return list;
+	}
+	
+	@Override
+	public String toString() {
+		return series.toString();
 	}
 
 }
