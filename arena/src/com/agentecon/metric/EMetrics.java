@@ -39,6 +39,8 @@ public enum EMetrics {
 	
 	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {DEMOGRAPHICS, TYPE, INVENTORY, CASH, TOTAL_DIVIDENDS, INTEREST, PRODUCTION, PRODUCTION_DETAILS, MARKET, MONETARY, UTILITY, UTILITY_SYNCHRONIZED, RANKING_CONSUMERS};
 
+//	public static final EMetrics[] ENABLED_METRICS = EMetrics.values();
+
 	public SimStats createAndRegister(ISimulation sim, List<String> list, boolean details) {
 		ArrayList<AgentQuery> queries = new ArrayList<>();
 		for (String query : list) {
