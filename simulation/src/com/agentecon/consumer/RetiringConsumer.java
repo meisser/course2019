@@ -60,7 +60,6 @@ public class RetiringConsumer extends BufferingMortalConsumer {
 			// Purpose: make utility difference between work age and retirement age smaller.
 			getInventory().getStock(getManHours()).remove(12.0);
 		}
-		System.out.println(getAge() + "\t" + getStock(getManHours()).getAmount());
 		return super.consume();
 	}
 
