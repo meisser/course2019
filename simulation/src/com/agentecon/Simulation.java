@@ -11,6 +11,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import com.agentecon.agent.IAgents;
 import com.agentecon.configuration.IConfiguration;
 import com.agentecon.configuration.InterestEconomyConfiguration;
+import com.agentecon.configuration.RetirementConfiguration;
 import com.agentecon.events.SimEvent;
 import com.agentecon.finance.StockMarket;
 import com.agentecon.goods.Good;
@@ -44,7 +45,8 @@ public class Simulation implements ISimulation, IStatistics, IIteratedSimulation
 
 	public Simulation() throws IOException {
 //		this(new CustomConfiguration("com.agentecon.exercise3.Configuration"));
-		this(new InterestEconomyConfiguration(535647, true));
+//		this(new InterestEconomyConfiguration(535647, true));
+		this(new RetirementConfiguration(213123));
 	}
 	
 	public Simulation(IConfiguration metaConfig) {
