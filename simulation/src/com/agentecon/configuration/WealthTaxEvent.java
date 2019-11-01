@@ -11,10 +11,13 @@ import com.agentecon.world.ICountry;
 
 public class WealthTaxEvent extends SimEvent {
 
-	private static final double TAX_RATE = 0.0001;
+	private static final int STEP = 1;
+	
+	private double taxRate;
 
-	public WealthTaxEvent() {
-		super(1, 1, 1);
+	public WealthTaxEvent(double rate) {
+		super(1, STEP, 1);
+		this.taxRate = rate * STEP;
 	}
 
 	@Override
@@ -22,9 +25,13 @@ public class WealthTaxEvent extends SimEvent {
 		Stock temp = new Stock(sim.getMoney());
 		for (IAgent a : sim.getAgents().getAgents()) {
 			double wealth = a.getWealth(stats);
-			double tax = wealth * TAX_RATE;
+			double tax = wealth * taxRate;
 			temp.transfer(a.getMoney(), Math.min(a.getMoney().getAmount(), tax));
 		}
+		distribute(sim, stats, temp);
+	}
+
+	protected void distribute(ICountry sim, IStatistics stats, Stock temp) {
 		Collection<IConsumer> consumers = sim.getAgents().getConsumers();
 		int alive = 0;
 		for (IConsumer c: consumers) {

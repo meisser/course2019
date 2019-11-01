@@ -27,7 +27,7 @@ public class Demographics extends SimStats {
 		this.retired = new TimeSeries("Retirees", getMaxDay());
 		this.working = new TimeSeries("Workers", getMaxDay());
 		this.population = new TimeSeries("Population", getMaxDay());
-		this.dependency = new TimeSeries("Dependency Ratio", getMaxDay());
+		this.dependency = new TimeSeries("Inverse Dependency Ratio", getMaxDay());
 		this.dailyutility = new TimeSeries("Average Daily Utility", getMaxDay());
 //		this.utilityOnDeath = new InstantiatingConcurrentHashMap<String, AveragingTimeSeries>() {
 //

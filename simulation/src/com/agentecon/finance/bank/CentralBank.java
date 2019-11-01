@@ -36,16 +36,16 @@ public class CentralBank extends PortfolioFirm {
 
 	public void distributeMoney(Collection<IConsumer> consumers, IStatistics stats) {
 		IStock wallet = getMoney();
-		try {
-			double price = stats.getGoodsMarketStats().getPriceBelief(indexGood);
-			double diff = price - 1.0;
-			if (diff > 0.0) {
-				wallet.remove(0.5*diff*wallet.getAmount());
-			} else if (diff < 0.0){
-				wallet.add(0.5*-diff*wallet.getAmount());
-			}
-		} catch (PriceUnknownException e) {
-		}
+//		try {
+//			double price = stats.getGoodsMarketStats().getPriceBelief(indexGood);
+//			double diff = price - 1.0;
+//			if (diff > 0.0) {
+//				wallet.remove(0.5*diff*wallet.getAmount());
+//			} else if (diff < 0.0){
+//				wallet.add(0.5*-diff*wallet.getAmount());
+//			}
+//		} catch (PriceUnknownException e) {
+//		}
 		policy.distribute(wallet.hideRelative(1.0 - DISTRIBUTION_FRACTION), consumers);
 	}
 

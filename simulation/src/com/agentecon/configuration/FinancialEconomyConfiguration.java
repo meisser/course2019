@@ -13,6 +13,7 @@ import java.net.SocketTimeoutException;
 
 import com.agentecon.IAgentFactory;
 import com.agentecon.agent.Endowment;
+import com.agentecon.agent.IAgents;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.consumer.IUtility;
 import com.agentecon.consumer.InvestingConsumer;
@@ -26,14 +27,20 @@ import com.agentecon.events.SinConsumerEvent;
 import com.agentecon.exercises.ExerciseAgentLoader;
 import com.agentecon.exercises.HermitConfiguration;
 import com.agentecon.finance.Firm;
+import com.agentecon.finance.IInterest;
 import com.agentecon.finance.MarketMaker;
+import com.agentecon.finance.bank.CentralBank;
 import com.agentecon.finance.bank.CreditBank;
+import com.agentecon.finance.bank.IDistributionPolicy;
+import com.agentecon.finance.bank.InterestDistribution;
 import com.agentecon.firm.Farm;
 import com.agentecon.firm.IBank;
+import com.agentecon.firm.Ticker;
 import com.agentecon.firm.production.CobbDouglasProduction;
 import com.agentecon.goods.Good;
 import com.agentecon.goods.IStock;
 import com.agentecon.goods.Stock;
+import com.agentecon.market.IStatistics;
 import com.agentecon.production.IProductionFunction;
 import com.agentecon.sim.SimulationConfig;
 import com.agentecon.world.ICountry;
@@ -50,14 +57,19 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	
 	private static final String FUND = "com.agentecon.fund.InvestmentFund";
 
+	private Ticker centralBank;
+	private InterestDistribution policy;
+	
 	public FinancialEconomyConfiguration(int seed) throws SocketTimeoutException, IOException {
 		super(5000, seed);
+		this.policy = new InterestDistribution();
 		IStock[] dailyEndowment = new IStock[] { new Stock(MAN_HOUR, HermitConfiguration.DAILY_ENDOWMENT) };
 		Endowment endowment = new Endowment(getMoney(), new IStock[0], dailyEndowment);
+		createCentralBank();
 		createPopulation(endowment, LIFE_EXPECTANCY);
 		createFarms(10);
 		addMarketMakers();
-//		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
+		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
 	}
 
 	private void createPopulation(Endowment endowment, int lifeExpectancy) {
@@ -81,42 +93,50 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 		});
 	}
 
-//	protected CentralBank findCentralBank(IAgents agents) {
-//		return (CentralBank) agents.getFirm(centralBank);
-//	}
+	protected CentralBank findCentralBank(IAgents agents) {
+		return (CentralBank) agents.getFirm(centralBank);
+	}
 
-//	private void createCentralBank() {
-//		addEvent(new SimEvent(0) {
-//			public void execute(int day, ICountry sim) {
-//				assert sim.getAgents().getAgents().size() == 0 : "Central bank must be first";
-//				CentralBank cb = new CentralBank(getDistributionPolicy(), sim, new Endowment(getMoney()));
-//				centralBank = cb.getTicker();
-//				sim.add(cb);
-//			}
-//		});
-//		addEvent(new SimEvent(1, 1, 1) {
-//			public void execute(int day, ICountry sim) {
-//				CentralBank bank = findCentralBank(sim.getAgents());
-//				bank.distributeMoney(sim.getAgents().getConsumers());
-//			}
-//		});
-//	}
-//	
-//	@Override
-//	public IInterest getInterest() {
-//		return new IInterest() {
-//			
-//			@Override
-//			public double getInterestRate() {
-//				return policy.getImpliedInterest();
-//			}
-//			
-//			@Override
-//			public double getAverageDiscountRate() {
-//				return 1.0/LIFE_EXPECTANCY;
-//			}
-//		};
-//	}
+	private void createCentralBank() {
+		addEvent(new SimEvent(0) {
+			public void execute(int day, ICountry sim) {
+				assert sim.getAgents().getAgents().size() == 0 : "Central bank must be first";
+				CentralBank cb = new CentralBank(getDistributionPolicy(), sim, new Endowment(getMoney()), POTATOE);
+				centralBank = cb.getTicker();
+				sim.add(cb);
+			}
+		});
+		addEvent(new WealthTaxEvent(0.001) {
+			
+			@Override
+			protected void distribute(ICountry sim, IStatistics stats, Stock temp) {
+				CentralBank cb = findCentralBank(sim.getAgents());
+				cb.getMoney().absorb(temp);
+				cb.distributeMoney(sim.getAgents().getConsumers(), stats);
+			}
+			
+		});
+	}
+	
+	@Override
+	public IInterest getInterest() {
+		return new IInterest() {
+			
+			@Override
+			public double getInterestRate() {
+				return policy.getImpliedInterest();
+			}
+			
+			@Override
+			public double getAverageDiscountRate() {
+				return 1.0/LIFE_EXPECTANCY;
+			}
+		};
+	}
+
+	protected IDistributionPolicy getDistributionPolicy() {
+		return policy;
+	}
 
 	private void createFarms(int count) {
 		Endowment end = new Endowment(getMoney(), new Stock[] { new Stock(getMoney(), 1000), new Stock(POTATOE, 10), new Stock(LAND, 100) }, new Stock[] {});
@@ -129,7 +149,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	}
 	
 	public IProductionFunction createProductionFunction() {
-		return new CobbDouglasProduction(POTATOE, 1.0, new Weight(LAND, 0.2, true), new Weight(MAN_HOUR, 0.6));
+		return new CobbDouglasProduction(POTATOE, 5.0, new Weight(LAND, 0.2, true), new Weight(MAN_HOUR, 0.6));
 	}
 
 	@Override
@@ -149,7 +169,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	}
 
 	protected void addMarketMakers() {
-		addEvent(new SimEvent(0, 0, 10) {
+		addEvent(new SimEvent(0, 0, 5) {
 
 			@Override
 			public void execute(int day, ICountry sim) {

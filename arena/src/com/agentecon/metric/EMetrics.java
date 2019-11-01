@@ -35,7 +35,7 @@ import com.agentecon.web.query.AgentQuery;
 
 public enum EMetrics {
 	
-	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, DIVIDENDS_TO_CONSUMERS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH, TYPE;
+	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH, TYPE;
 	
 //	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {DEMOGRAPHICS, TYPE, INVENTORY, CASH, TOTAL_DIVIDENDS, INTEREST, PRODUCTION, PRODUCTION_DETAILS, MARKET, MONETARY, UTILITY, UTILITY_SYNCHRONIZED, RANKING_CONSUMERS};
 
@@ -63,8 +63,8 @@ public enum EMetrics {
 			return "Total dividends paid out to free float shareholders (no dividend is paid to firm itself).";
 		case AVERAGE_DIVIDENDS:
 			return "Average dividends paid out to free float shareholders (no dividend is paid to firm itself).";
-		case DIVIDENDS_TO_CONSUMERS:
-			return "Daily real dividends paid to consumers. To calculate real dividends, nominal dividends are divided by the price index of the goods market. For firm types, the average over all instances is calculated.";
+//		case DIVIDENDS_TO_CONSUMERS:
+//			return "Daily real dividends paid to consumers. To calculate real dividends, nominal dividends are divided by the price index of the goods market. For firm types, the average over all instances is calculated.";
 		case INTEREST:
 			return "Interest rate on money holdings (for simulations with a bank paying interest to consumers).";	
 		case EQUALITY:
@@ -110,8 +110,8 @@ public enum EMetrics {
 			return new DividendStats(sim, false, false, details);
 		case AVERAGE_DIVIDENDS:
 			return new DividendStats(sim, false, true, details);
-		case DIVIDENDS_TO_CONSUMERS:
-			return new DividendStats(sim, true, false, details);
+//		case DIVIDENDS_TO_CONSUMERS:
+//			return new DividendStats(sim, true, false, details);
 		case INTEREST:
 			return new InterestStats(sim);
 		case EQUALITY:

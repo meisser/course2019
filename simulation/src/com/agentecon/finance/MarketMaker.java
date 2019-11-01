@@ -8,7 +8,6 @@ import com.agentecon.consumer.IMarketParticipant;
 import com.agentecon.firm.IFirm;
 import com.agentecon.firm.IMarketMaker;
 import com.agentecon.firm.IStockMarket;
-import com.agentecon.firm.Portfolio;
 import com.agentecon.firm.Position;
 import com.agentecon.firm.Ticker;
 import com.agentecon.goods.Good;

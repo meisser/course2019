@@ -46,8 +46,8 @@ public class Simulation implements ISimulation, IStatistics, IIteratedSimulation
 	public Simulation() throws IOException {
 //		this(new CustomConfiguration("com.agentecon.exercise3.Configuration"));
 //		this(new InterestEconomyConfiguration(535647, true));
-//		this(new FinancialEconomyConfiguration(1313));
-		this(new RetirementConfiguration(123123));
+		this(new FinancialEconomyConfiguration(1313));
+//		this(new RetirementConfiguration(123123));
 	}
 	
 	public Simulation(IConfiguration metaConfig) {
