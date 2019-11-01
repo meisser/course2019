@@ -38,6 +38,7 @@ import com.agentecon.goods.Good;
 import com.agentecon.goods.IStock;
 import com.agentecon.goods.Quantity;
 import com.agentecon.goods.Stock;
+import com.agentecon.market.IStatistics;
 import com.agentecon.production.IProductionFunction;
 import com.agentecon.sim.SimulationConfig;
 import com.agentecon.world.ICountry;
@@ -89,15 +90,15 @@ public class BasicEconomyConfiguration extends SimulationConfig implements IUtil
 		addEvent(new SimEvent(0) {
 			public void execute(int day, ICountry sim) {
 				assert sim.getAgents().getAgents().size() == 0 : "Central bank must be first";
-				CentralBank cb = new CentralBank(getDistributionPolicy(), sim, new Endowment(getMoney()));
+				CentralBank cb = new CentralBank(getDistributionPolicy(), sim, new Endowment(getMoney()), POTATOE);
 				centralBank = cb.getTicker();
 				sim.add(cb);
 			}
 		});
 		addEvent(new SimEvent(1, 1, 1) {
-			public void execute(int day, ICountry sim) {
+			public void execute(int day, ICountry sim, IStatistics stats) {
 				CentralBank bank = findCentralBank(sim.getAgents());
-				bank.distributeMoney(sim.getAgents().getConsumers());
+				bank.distributeMoney(sim.getAgents().getConsumers(), stats);
 			}
 		});
 	}

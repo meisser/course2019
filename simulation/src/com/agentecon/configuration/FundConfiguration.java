@@ -1,7 +1,6 @@
 package com.agentecon.configuration;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.SocketTimeoutException;
 
 import com.agentecon.IAgentFactory;
@@ -22,14 +21,13 @@ import com.agentecon.finance.bank.CreditBank;
 import com.agentecon.firm.IBank;
 import com.agentecon.goods.IStock;
 import com.agentecon.goods.Stock;
-import com.agentecon.market.IStatistics;
 import com.agentecon.research.IInnovation;
 import com.agentecon.world.ICountry;
 
 public class FundConfiguration extends HighProductivityConfiguration implements IUtilityFactory, IInnovation {
 	
-	public static final String FUND = "com.agentecon.exercise9.InvestmentFund";
-	public static final String LEV_FUND = "com.agentecon.exercise9.LeveragedInvestmentFund";
+	public static final String FUND = "com.agentecon.fund.InvestmentFund";
+	public static final String LEV_FUND = "com.agentecon.fund.LeveragedInvestmentFund";
 
 	private static final int BASIC_AGENTS = 50;
 
@@ -57,23 +55,9 @@ public class FundConfiguration extends HighProductivityConfiguration implements 
 		IStock[] dailyEndowment = new IStock[] { new Stock(MAN_HOUR, HermitConfiguration.DAILY_ENDOWMENT) };
 		Endowment workerEndowment = new Endowment(getMoney(), new IStock[0], dailyEndowment);
 		createBasicPopulation(workerEndowment);
-		addBank();
+//		addBank();
 		addMarketMakers();
-		addInvestmentFunds(new ExerciseAgentLoader(LEV_FUND) {
-			
-			@Override
-			protected void check(Class<?> clazz) throws InvalidAgentException {
-				try {
-					Method m = clazz.getDeclaredMethod("considerBankruptcy", IStatistics.class);
-					assert m != null;
-				} catch (NoSuchMethodException e) {
-					throw new InvalidAgentException("Agent must have considerBankruptcy method", e);
-				} catch (SecurityException e) {
-					throw new InvalidAgentException("Agent must have considerBankruptcy method", e);
-				}
-			}
-			
-		}, ExerciseAgentLoader.TEAMS.size());
+		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
 		addEvent(new CentralBankEvent(POTATOE));
 		addEvent(new WealthTaxEvent());
 	}
