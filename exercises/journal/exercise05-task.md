@@ -12,7 +12,7 @@ In lesson 6, we have seen that the Sante Fe artificial stock market used an inte
 
 In mathematical models, prices are usually determined by market clearing conditions. Here, the price is determined by supply (S, sellers) and demand (B, buyers), and a parameter lambda. Your task is to verify statistically how well this equation works in our simulation. To do so, I first suggest to reformulate the equation a little:
 
-$\delta p = p_{t} - p_{t-30} = \lambda (\Sum_{i=t-30}^{t} B_i - S_i)$
+$\Delta p = p_{t} - p_{t-30} = \lambda (\sum_{i=t-30}^{t} B_i - S_i)$
 
 This is essentially the same, but eliminating random noise by looking at a timeframe of 30 days as well as trying to explain the price difference instead of the raw price. When regressing the original equation, one would get an extremely high explanatory power due to the fact that the price today is an excellent predictor for the price tomorrow. However, I want you to know how well the net inflow predicts price *changes*. That's what the above equation can be used for.
 
