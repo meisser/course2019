@@ -71,7 +71,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 		createPopulation(endowment, LIFE_EXPECTANCY);
 		createFarms(10);
 		addMarketMakers();
-//		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
+		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
 	}
 
 	private void createPopulation(Endowment endowment, int lifeExpectancy) {
@@ -151,13 +151,13 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 				return firm;
 			}
 		});
-//		addEvent(new SimEvent(3000) {
-//			@Override
-//			public void execute(int day, ICountry sim) {
-//				Farm farm = (Farm) sim.getAgents().getAgent(ticker[0].getNumer());
-//				farm.updateProductionFunction(createProductionFunction(PRODUCTION_MULTIPLIER*2));
-//			}
-//		});
+		addEvent(new SimEvent(3000) {
+			@Override
+			public void execute(int day, ICountry sim) {
+				Farm farm = (Farm) sim.getAgents().getAgent(ticker[0].getNumer());
+				farm.updateProductionFunction(createProductionFunction(PRODUCTION_MULTIPLIER*2));
+			}
+		});
 	}
 
 	public IProductionFunction createProductionFunction(double multiplier) {
