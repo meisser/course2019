@@ -54,12 +54,14 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	public static final Good POTATOE = HermitConfiguration.POTATOE;
 	public static final Good LAND = HermitConfiguration.LAND;
 	public static final double START_CAPITAL = 1000;
+
+	protected static final double PRODUCTION_MULTIPLIER = 5.0;
 	
 	private static final String FUND = "com.agentecon.fund.InvestmentFund";
 
 	private Ticker centralBank;
 	private InterestDistribution policy;
-	
+
 	public FinancialEconomyConfiguration(int seed) throws SocketTimeoutException, IOException {
 		super(5000, seed);
 		this.policy = new InterestDistribution();
@@ -69,27 +71,27 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 		createPopulation(endowment, LIFE_EXPECTANCY);
 		createFarms(10);
 		addMarketMakers();
-		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
+//		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
 	}
 
 	private void createPopulation(Endowment endowment, int lifeExpectancy) {
-		addEvent(new ConsumerEvent(lifeExpectancy - 1, endowment, this){
-			
+		addEvent(new ConsumerEvent(lifeExpectancy - 1, endowment, this) {
+
 			int count = 1;
 
 			@Override
-			protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util){
+			protected IConsumer createConsumer(ICountry id, Endowment end, IUtility util) {
 				return new InvestingConsumer(id, count++, end, util);
 			}
-			
+
 		});
-		addEvent(new SinConsumerEvent(0, 0, CYCLE_LENGTH, CYCLE_LENGTH){
+		addEvent(new SinConsumerEvent(0, 0, CYCLE_LENGTH, CYCLE_LENGTH) {
 
 			@Override
 			protected void addConsumer(ICountry sim) {
 				sim.add(new InvestingConsumer(sim, lifeExpectancy, endowment, create(0)));
 			}
-			
+
 		});
 	}
 
@@ -107,29 +109,29 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 			}
 		});
 		addEvent(new WealthTaxEvent(0.001) {
-			
+
 			@Override
 			protected void distribute(ICountry sim, IStatistics stats, Stock temp) {
 				CentralBank cb = findCentralBank(sim.getAgents());
 				cb.getMoney().absorb(temp);
 				cb.distributeMoney(sim.getAgents().getConsumers(), stats);
 			}
-			
+
 		});
 	}
-	
+
 	@Override
 	public IInterest getInterest() {
 		return new IInterest() {
-			
+
 			@Override
 			public double getInterestRate() {
 				return policy.getImpliedInterest();
 			}
-			
+
 			@Override
 			public double getAverageDiscountRate() {
-				return 1.0/LIFE_EXPECTANCY;
+				return 1.0 / LIFE_EXPECTANCY;
 			}
 		};
 	}
@@ -140,23 +142,33 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 
 	private void createFarms(int count) {
 		Endowment end = new Endowment(getMoney(), new Stock[] { new Stock(getMoney(), 1000), new Stock(POTATOE, 10), new Stock(LAND, 100) }, new Stock[] {});
-		addEvent(new FirmEvent(count, end, createProductionFunction()) {
+		Ticker[] ticker = new Ticker[1];
+		addEvent(new FirmEvent(count, end, createProductionFunction(PRODUCTION_MULTIPLIER)) {
 			@Override
 			protected Firm createFirm(ICountry sim, Endowment end, IProductionFunction prodFun) {
-				return new Farm(sim, end, prodFun);
+				Firm firm = new Farm(sim, end, prodFun);
+				ticker[0] = firm.getTicker();
+				return firm;
 			}
 		});
+//		addEvent(new SimEvent(3000) {
+//			@Override
+//			public void execute(int day, ICountry sim) {
+//				Farm farm = (Farm) sim.getAgents().getAgent(ticker[0].getNumer());
+//				farm.updateProductionFunction(createProductionFunction(PRODUCTION_MULTIPLIER*2));
+//			}
+//		});
 	}
-	
-	public IProductionFunction createProductionFunction() {
-		return new CobbDouglasProduction(POTATOE, 5.0, new Weight(LAND, 0.2, true), new Weight(MAN_HOUR, 0.6));
+
+	public IProductionFunction createProductionFunction(double multiplier) {
+		return new CobbDouglasProduction(POTATOE, multiplier, new Weight(LAND, 0.2, true), new Weight(MAN_HOUR, 0.6));
 	}
 
 	@Override
 	public IUtility create(int number) {
 		return new LogUtilWithFloor(new Weight(POTATOE, 1.0), new Weight(MAN_HOUR, 1.0));
 	}
-	
+
 	private void addBank() {
 		addEvent(new SimEvent(0) {
 
@@ -180,7 +192,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 			}
 		});
 	}
-	
+
 	private void addInvestmentFunds(IAgentFactory factory, int number) throws IOException {
 		addEvent(new SimEvent(1000, 0, number) {
 
@@ -193,5 +205,5 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 			}
 		});
 	}
-	
+
 }

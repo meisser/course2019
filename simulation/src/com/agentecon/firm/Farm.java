@@ -30,7 +30,7 @@ public class Farm extends Producer {
 
 	public Farm(IAgentIdGenerator id, IShareholder owner, IStock money, IStock land, IProductionFunction prodFun, IStatistics stats) {
 		super(id, owner, prodFun, stats.getMoney());
-		this.strategy = new ExpectedRevenueBasedStrategy((CobbDouglasProduction)prodFun);
+		this.initializeStrategy((CobbDouglasProduction)prodFun);
 		this.marketing = new MarketingDepartment(getMoney(), stats.getGoodsMarketStats(), getStock(FarmingConfiguration.MAN_HOUR), getStock(FarmingConfiguration.POTATOE));
 		getStock(land.getGood()).absorb(land);
 		getMoney().absorb(money);
@@ -43,8 +43,18 @@ public class Farm extends Producer {
 
 	public Farm(IAgentIdGenerator id, IShareholder owner, IProductionFunction prodFun, Endowment end, IStatistics stats) {
 		super(id, owner, prodFun, end);
-		this.strategy = new ExpectedRevenueBasedStrategy((CobbDouglasProduction)prodFun);
+		this.initializeStrategy((CobbDouglasProduction)prodFun);
 		this.marketing = new MarketingDepartment(getMoney(), stats == null ? null : stats.getGoodsMarketStats(), getStock(FarmingConfiguration.MAN_HOUR), getStock(FarmingConfiguration.POTATOE));
+	}
+	
+	private void initializeStrategy(CobbDouglasProduction prodFun) {
+		this.strategy = new ExpectedRevenueBasedStrategy((CobbDouglasProduction)prodFun);
+	}
+
+	@Override
+	public void updateProductionFunction(IProductionFunction prodFun) {
+		super.updateProductionFunction(prodFun);
+		this.initializeStrategy((CobbDouglasProduction) prodFun);
 	}
 
 	protected IStock getLand() {

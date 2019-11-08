@@ -40,6 +40,10 @@ public abstract class Producer extends Firm implements IProducer {
 	protected IProductionFunction getProductionFunction() {
 		return production;
 	}
+	
+	public void updateProductionFunction(IProductionFunction prodFun) {
+		this.production = prodFun;
+	}
 
 	@Override
 	public void addProducerMonitor(IProducerListener listener) {

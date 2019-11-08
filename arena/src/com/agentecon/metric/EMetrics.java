@@ -137,7 +137,7 @@ public enum EMetrics {
 		case PRODUCTION_DETAILS:
 			return new ProductionDetailStats(sim);
 		case STOCKMARKET:
-			return new StockMarketStats(sim, true, false);
+			return new StockMarketStats(sim, true, details);
 		case RANKING_CONSUMERS:
 			return new UtilityRanking(sim, true);
 		case RANKING_FIRMS:
