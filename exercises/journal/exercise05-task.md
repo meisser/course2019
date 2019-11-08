@@ -6,7 +6,7 @@ This exercise is based on the [financial economy setting without funds](http://m
 ## Task
 In lesson 6, we have seen that the Sante Fe artificial stock market used an interesting equation to determine prices, namely:
 
-![equation](images/ex5-equation.jpg "Santa Fe Pricing Equation")
+![equation](images/ex5-equation.png "Santa Fe Pricing Equation")
 
 (Source: “Building the Santa Fe Artificial Stock Market”, 2002, Blake LeBaron)
 
@@ -16,7 +16,8 @@ $\delta p = p_{t} - p_{t-30} = \lambda (\Sum_{i=t-30}^{t} B_i - S_i)$
 
 This is essentially the same, but eliminating random noise by looking at a timeframe of 30 days as well as trying to explain the price difference instead of the raw price. When regressing the original equation, one would get an extremely high explanatory power due to the fact that the price today is an excellent predictor for the price tomorrow. However, I want you to know how well the net inflow predicts price *changes*. That's what the above equation can be used for.
 
-What do you find? How well can the 30-day net inflow explain 30-day price changes in this setting? 
+What do you find? How well can the 30-day net inflow explain 30-day price changes in this setting?
+(Again, discard the first 1000 days or so.)
 
 ## Deadline
 
