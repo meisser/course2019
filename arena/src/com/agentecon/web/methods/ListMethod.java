@@ -101,6 +101,14 @@ public class ListMethod extends WebApiMethod {
 
 	public SimulationStepper getSimulation(String name) throws IOException {
 		SimulationHandle handle = getHandle(name);
+		if (handle == null) {
+			System.out.println("No simulation found named: " + name);
+			System.out.println("Available are:");
+			for (String s: handles.keySet()) {
+				System.out.println(s);
+			}
+			throw new IOException("No simulation found with name " + name);
+		}
 		return getSimulation(handle);
 	}
 
