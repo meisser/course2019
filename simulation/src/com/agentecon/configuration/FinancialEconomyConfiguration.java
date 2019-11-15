@@ -72,6 +72,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 		createPopulation(endowment, LIFE_EXPECTANCY);
 		createFarms(10);
 		addMarketMakers();
+		addBank();
 		boolean remote = SimulationConfig.shouldLoadRemoteTeams();
 		int[] teams = ExerciseAgentLoader.COMPETITIVE_TEAMS;
 		if (remote) {
