@@ -35,7 +35,7 @@ import com.agentecon.web.query.AgentQuery;
 
 public enum EMetrics {
 	
-	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH, TYPE;
+	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH_AGG, WEALTH_AVG, TYPE;
 	
 //	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {DEMOGRAPHICS, TYPE, INVENTORY, CASH, TOTAL_DIVIDENDS, INTEREST, PRODUCTION, PRODUCTION_DETAILS, MARKET, MONETARY, UTILITY, UTILITY_SYNCHRONIZED, RANKING_CONSUMERS};
 
@@ -55,8 +55,10 @@ public enum EMetrics {
 		switch (this) {
 		case CASH:
 			return "Nightly cash holdings, aggregate per type as well as average per type.";
-		case WEALTH:
-			return "Total net worth at market prices. Related: cash statistics.";
+		case WEALTH_AGG:
+			return "Aggregate net worth at market prices for each agent type. Related: cash statistics.";
+		case WEALTH_AVG:
+			return "Average net worth at market prices for each agent type. Related: cash statistics.";
 		case DEMOGRAPHICS:
 			return "The size of the population and related figures.";
 		case TOTAL_DIVIDENDS:
@@ -126,8 +128,10 @@ public enum EMetrics {
 			return new MarketMakerStats(sim);
 		case CASH:
 			return new CashStats(sim, details);
-		case WEALTH:
-			return new WealthStats(sim, details);
+		case WEALTH_AGG:
+			return new WealthStats(sim, true, details);
+		case WEALTH_AVG:
+			return new WealthStats(sim, false, details);
 		case MONETARY:
 			return new MonetaryStats(sim);
 		case OWNERSHIP:

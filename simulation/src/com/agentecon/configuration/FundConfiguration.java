@@ -57,7 +57,7 @@ public class FundConfiguration extends HighProductivityConfiguration implements 
 		createBasicPopulation(workerEndowment);
 //		addBank();
 		addMarketMakers();
-		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
+		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.length);
 		addEvent(new CentralBankEvent(POTATOE));
 		addEvent(new WealthTaxEvent(0.0001));
 	}

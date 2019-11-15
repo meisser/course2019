@@ -30,7 +30,7 @@ import com.agentecon.world.ICountry;
 
 public class GrowthConfiguration extends FarmingConfiguration implements IUtilityFactory, IInnovation {
 
-	private static final int BASIC_AGENTS = 5 * ExerciseAgentLoader.TEAMS.size();
+	private static final int BASIC_AGENTS = 5 * ExerciseAgentLoader.TEAMS.length;
 	public static final String FARMER = "com.agentecon.exercise4.Farmer";
 
 	public static final double GROWTH_RATE = 0.0023;

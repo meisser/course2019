@@ -54,7 +54,7 @@ public class SimulationRunner {
 			this.stats.add(new ValuationStats(sim));
 			this.stats.add(new OwnershipStats(sim, false));
 			this.stats.add(new DividendStats(sim, false, false, false));
-			this.stats.add(new WealthStats(sim, false));
+			this.stats.add(new WealthStats(sim, false, false));
 			// this.stats.add(new ProductionStats());
 			// this.stats.add(new SingleFirmStats());
 			// this.stats.add(new InventoryStats(sim));

@@ -56,8 +56,9 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	public static final double START_CAPITAL = 1000;
 
 	protected static final double PRODUCTION_MULTIPLIER = 5.0;
-	
+
 	private static final String FUND = "com.agentecon.fund.InvestmentFund";
+	private static final String TEST_FUND = "com.agentecon.fund.TestInvestmentFund";
 
 	private Ticker centralBank;
 	private InterestDistribution policy;
@@ -71,7 +72,14 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 		createPopulation(endowment, LIFE_EXPECTANCY);
 		createFarms(10);
 		addMarketMakers();
-		addInvestmentFunds(new ExerciseAgentLoader(FUND), ExerciseAgentLoader.TEAMS.size());
+		boolean remote = SimulationConfig.shouldLoadRemoteTeams();
+		int[] teams = ExerciseAgentLoader.COMPETITIVE_TEAMS;
+		if (remote) {
+			addInvestmentFunds(new ExerciseAgentLoader(FUND, teams), teams.length);
+		} else {
+			addInvestmentFunds(new ExerciseAgentLoader(FUND), teams.length - 1);
+			addInvestmentFunds(new ExerciseAgentLoader(TEST_FUND), 1);
+		}
 	}
 
 	private void createPopulation(Endowment endowment, int lifeExpectancy) {
@@ -155,7 +163,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 			@Override
 			public void execute(int day, ICountry sim) {
 				Farm farm = (Farm) sim.getAgents().getAgent(ticker[0].getNumer());
-				farm.updateProductionFunction(createProductionFunction(PRODUCTION_MULTIPLIER*2));
+				farm.updateProductionFunction(createProductionFunction(PRODUCTION_MULTIPLIER * 2));
 			}
 		});
 	}

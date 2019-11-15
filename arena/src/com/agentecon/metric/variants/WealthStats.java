@@ -14,10 +14,12 @@ import com.agentecon.metric.series.TimeSeriesCollector;
 
 public class WealthStats extends SimStats {
 
+	private boolean aggregate;
 	private TimeSeriesCollector wealth;
 
-	public WealthStats(ISimulation agents, boolean individuals) {
+	public WealthStats(ISimulation agents, boolean aggregate, boolean individuals) {
 		super(agents);
+		this.aggregate = aggregate;
 		this.wealth = new TimeSeriesCollector(individuals, getMaxDay());
 	}
 
@@ -54,7 +56,7 @@ public class WealthStats extends SimStats {
 				}
 			}, a.getWealth(stats));
 		}
-		wealth.flushDay(day, false);
+		wealth.flushDay(day, !aggregate);
 	}
 
 	@Override

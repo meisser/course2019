@@ -27,7 +27,6 @@ import com.agentecon.goods.Quantity;
 import com.agentecon.goods.Stock;
 import com.agentecon.production.IProductionFunction;
 import com.agentecon.research.IInnovation;
-import com.agentecon.research.IResearchProject;
 import com.agentecon.sim.SimulationConfig;
 import com.agentecon.world.ICountry;
 
@@ -46,7 +45,7 @@ public class HermitConfiguration extends SimulationConfig implements IInnovation
 	public static final Quantity FIXED_COSTS = new Quantity(MAN_HOUR, 6.0);
 
 	public HermitConfiguration() throws IOException {
-		this(new ExerciseAgentLoader(AGENT_CLASS_NAME), ExerciseAgentLoader.TEAMS.size());
+		this(new ExerciseAgentLoader(AGENT_CLASS_NAME), ExerciseAgentLoader.TEAMS.length);
 	}
 
 	public HermitConfiguration(IAgentFactory factory, int agents) {

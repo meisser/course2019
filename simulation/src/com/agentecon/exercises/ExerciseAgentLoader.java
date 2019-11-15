@@ -28,18 +28,24 @@ import com.agentecon.sim.SimulationConfig;
 
 public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
-	public static final String DEFAULT_REPO = "course2019";
+	private static final int YEAR = 2;
+	public static final int[] TEAMS = new int[] { 1, 2, 3, 5, 7, 8, 10 };
+	public static final int[] COMPETITIVE_TEAMS = new int[] { 2, 3, 5, 8, 10 };
 
-	public static final Collection<String> TEAMS = createRepos(2, 1, 2, 3, 5, 7, 8, 10);
+	public static final String DEFAULT_REPO = "course2019";
 
 	public ExerciseAgentLoader(String classname) throws SocketTimeoutException, IOException {
 		this(classname, SimulationConfig.shouldLoadRemoteTeams());
 	}
 
 	public ExerciseAgentLoader(String classname, boolean remoteTeams) throws SocketTimeoutException, IOException {
-		super(remoteTeams ? new ExerciseAgentFactory(classname, "meisser", DEFAULT_REPO) : new ExerciseAgentFactory(classname));
-		if (remoteTeams) {
-			addFactories(classname, remoteTeams);
+		this(classname, remoteTeams ? TEAMS : new int[] {});
+	}
+
+	public ExerciseAgentLoader(String classname, int... teams) throws SocketTimeoutException, IOException {
+		super(teams.length == 0 ? new ExerciseAgentFactory(classname) : new ExerciseAgentFactory(classname, "meisser", DEFAULT_REPO));
+		if (teams.length != 0) {
+			addFactories(classname, createRepos(YEAR, teams));
 		}
 	}
 
@@ -55,8 +61,8 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 		return repos;
 	}
 
-	private void addFactories(String classname, boolean remoteTeams) throws SocketTimeoutException, IOException {
-		Stream<IAgentFactory> stream = TEAMS.parallelStream().map(team -> {
+	private void addFactories(String classname, Collection<String> teams) throws SocketTimeoutException, IOException {
+		Stream<IAgentFactory> stream = teams.parallelStream().map(team -> {
 			return createFactory(classname, team);
 		}).filter(factory -> factory != null);
 		for (IAgentFactory factory : stream.collect(Collectors.toList())) {

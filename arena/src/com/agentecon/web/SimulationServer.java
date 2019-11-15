@@ -48,7 +48,7 @@ public class SimulationServer extends VisServer {
 				this.simulations.add(new GitSimulationHandle("meisser", "course2019", "ex4-financial-economy-no-funds-1", true));
 				this.simulations.add(new GitSimulationHandle("meisser", "course2019", "financial-economy-1", true));
 				this.simulations.add(new GitSimulationHandle("meisser", "course2019", "financial-economy-no-funds-1", true));
-				this.simulations.add(new GitSimulationHandle("meisser", "course2019", "financial-economy-shock-1", true));
+				this.simulations.add(new GitSimulationHandle("meisser", "course2019", "financial-economy-shock-2", true));
 			} catch (IOException e) {
 				System.out.println("Disabled remote repositories. " + e.getMessage());
 			}
