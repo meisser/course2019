@@ -23,9 +23,11 @@ public class ShareholderValueStats extends SimStats implements IMarketListener {
 
 	protected TimeSeriesCollector collector;
 	private HashMap<Good, Holding> holdings;
+	protected HashMap<Ticker, String> names;
 
-	public ShareholderValueStats(ISimulation agents, boolean integral, boolean details) {
+	public ShareholderValueStats(ISimulation agents) {
 		super(agents);
+		this.names = new HashMap<Ticker, String>();
 		this.holdings = new InstantiatingHashMap<Good, ShareholderValueStats.Holding>() {
 
 			@Override
@@ -33,7 +35,7 @@ public class ShareholderValueStats extends SimStats implements IMarketListener {
 				return new Holding();
 			}
 		};
-		this.collector = new TimeSeriesCollector(details, getMaxDay(), integral);
+		this.collector = new TimeSeriesCollector(true, getMaxDay());
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class ShareholderValueStats extends SimStats implements IMarketListener {
 			assert !(buyer instanceof IConsumer);
 			Holding h = holdings.get(good);
 			double gains = h.notifySold(quantity, payment);
-			collector.record(getDay(), new TickerType((Ticker) good), gains);
+			collector.record(getDay(), new TickerType(names.get(good), (Ticker) good), gains);
 		} else if (buyer instanceof IConsumer) {
 			Holding h = holdings.get(good);
 			h.notifyBought(quantity, payment);
@@ -56,6 +58,7 @@ public class ShareholderValueStats extends SimStats implements IMarketListener {
 
 	@Override
 	public void notifyFirmCreated(IFirm firm) {
+		names.put(firm.getTicker(), firm.getName());
 		firm.addFirmMonitor(new IFirmListener() {
 
 			@Override
@@ -76,7 +79,7 @@ public class ShareholderValueStats extends SimStats implements IMarketListener {
 
 	@Override
 	public Collection<TimeSeries> getTimeSeries() {
-		return collector.getTimeSeries();
+		return collector.getIndividualTimeSeries();
 	}
 
 	class Holding {

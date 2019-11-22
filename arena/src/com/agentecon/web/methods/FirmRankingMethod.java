@@ -43,7 +43,7 @@ public class FirmRankingMethod extends SimSpecificMethod {
 			FirmRanking ranking = (FirmRanking) simulation.getCachedItem(CACHE_KEY);
 			if (ranking == null) {
 				ISimulation sim = simulation.getSimulation().getItem();
-				ranking = new FirmRanking(sim, false);
+				ranking = new FirmRanking(sim);
 				sim.addListener(ranking);
 				sim.run();
 				simulation.putCached(CACHE_KEY, ranking);

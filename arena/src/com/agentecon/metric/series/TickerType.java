@@ -4,15 +4,17 @@ import com.agentecon.firm.Ticker;
 
 public class TickerType implements IAgentType {
 
+	private String name;
 	private Ticker ticker;
 
-	public TickerType(Ticker ticker) {
+	public TickerType(String name, Ticker ticker) {
+		this.name = name;
 		this.ticker = ticker;
 	}
 
 	@Override
 	public String getName() {
-		return ticker.getName();
+		return name;
 	}
 
 	@Override

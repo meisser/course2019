@@ -187,6 +187,14 @@ public class TimeSeries implements Comparable<TimeSeries> {
 		}
 		return avg;
 	}
+	
+	public double getSum() {
+		double sum = 0.0;
+		for (Point p: line.getPoints()) {
+			sum += p.y;
+		}
+		return sum;
+	}
 
 	public TimeSeries divideBy(TimeSeries referencePrice) {
 		TimeSeries ts = new TimeSeries(getName() + "/" + referencePrice.getName(), max);

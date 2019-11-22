@@ -24,16 +24,23 @@ public class FirmRanking extends ShareholderValueStats {
 
 	private ArrayList<Rank> ranking;
 	private HashMap<String, Rank> types;
+	private HashMap<String, String> nameTypeMap;
 
-	public FirmRanking(ISimulation sim, boolean enableTimeSeries) {
-		super(sim, true, true);
+	public FirmRanking(ISimulation sim) {
+		super(sim);
 		this.ranking = null;
 		this.types = new HashMap<String, Rank>();
+		this.nameTypeMap = new HashMap<String, String>();
 	}
 
 	@Override
 	public void notifyFirmCreated(IFirm firm) {
-		types.put(firm.getType(), new Rank(firm.getType(), (Agent) firm));
+		Rank rank = types.get(firm.getType());
+		if (rank == null) {
+			rank = new Rank(firm.getType(), (Agent) firm);
+			types.put(firm.getType(), rank);
+		}
+		nameTypeMap.put(firm.getName(), firm.getType());
 		super.notifyFirmCreated(firm);
 	}
 
@@ -50,13 +57,13 @@ public class FirmRanking extends ShareholderValueStats {
 
 	public List<Rank> getRanking() {
 		if (ranking == null) {
-			ranking = new ArrayList<Rank>();
-			Collection<? extends TimeSeries> series = collector.createTypeAveragesFromIndividualSeries();
+			Collection<? extends TimeSeries> series = collector.getIndividualTimeSeries();
 			for (TimeSeries ts : series) {
-				Rank rank = types.get(ts.getName());
-				rank.add(ts.getLatest(), false);
-				ranking.add(rank);
+				String type = nameTypeMap.get(ts.getName());
+				Rank rank = types.get(type);
+				rank.add(ts.getSum(), true);
 			}
+			ranking = new ArrayList<Rank>(types.values());
 			Collections.sort(ranking);
 			for (Rank rank : ranking) {
 				rank.roundScore();

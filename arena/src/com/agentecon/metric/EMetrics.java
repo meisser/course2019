@@ -37,7 +37,7 @@ public enum EMetrics {
 	
 	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, SHAREHOLDER_GAINS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH_AGG, WEALTH_AVG, TYPE;
 	
-	public static final EMetrics[] ENABLED_METRICS = EMetrics.values();
+	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, SHAREHOLDER_GAINS, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, WEALTH_AGG, WEALTH_AVG, TYPE};
 
 	public SimStats createAndRegister(ISimulation sim, List<String> list, boolean details) {
 		ArrayList<AgentQuery> queries = new ArrayList<>();
@@ -108,7 +108,7 @@ public enum EMetrics {
 		case AVERAGE_DIVIDENDS:
 			return new DividendStats(sim, false, true, details);
 		case SHAREHOLDER_GAINS:
-			return new ShareholderValueStats(sim, false, details);
+			return new ShareholderValueStats(sim);
 		case INTEREST:
 			return new InterestStats(sim);
 		case EQUALITY:
