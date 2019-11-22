@@ -30,7 +30,7 @@ public class ExerciseAgentLoader extends AgentFactoryMultiplex {
 
 	private static final int YEAR = 2;
 	public static final int[] TEAMS = new int[] { 1, 2, 3, 5, 7, 8, 10 };
-	public static final int[] COMPETITIVE_TEAMS = new int[] { 2, 3, 5, 8, 10 };
+	public static final int[] COMPETITIVE_TEAMS = new int[] { 2, 5, 8, 10 };
 
 	public static final String DEFAULT_REPO = "course2019";
 
