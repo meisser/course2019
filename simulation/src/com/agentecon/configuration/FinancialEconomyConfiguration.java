@@ -160,7 +160,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 				return firm;
 			}
 		});
-		addEvent(new SimEvent(3000) {
+		addEvent(new SimEvent(2000) {
 			@Override
 			public void execute(int day, ICountry sim) {
 				Farm farm = (Farm) sim.getAgents().getAgent(ticker[0].getNumer());
