@@ -4,12 +4,12 @@
     Loading firm ranking...
   </div>
   <div v-if="!loading">
-    <p>Firm types ranked by total real dividends paid to consumer-shareholders.</p>
+    <p>Ranking of firm types by the realized total gains their consumer-shareholders made. The gains include dividends and realized capital gains.</p>
     <table class="agentlist">
       <tr>
         <td>Rank</td>
         <td>Firm</td>
-        <td>Dividends</td>
+        <td>Gains</td>
         <td>Source</td>
         <td>Version</td>
       </tr>

@@ -48,7 +48,7 @@ public class Inheritance implements IShareholder {
 		} else {
 			Inventory inv = new Inventory(inventory.getMoney().getGood());
 			inv.absorb(share, this.inventory);
-			Portfolio port = new Portfolio(inv.getMoney(), false);
+			Portfolio port = new Portfolio(inv.getMoney(), true);
 			port.absorbPositions(share, portfolio);
 			return new Inheritance(inv, port);
 		}
@@ -70,7 +70,7 @@ public class Inheritance implements IShareholder {
 		int size = consumers.size();
 		for (int i = 0; i < size - 1; i++) {
 			double ratio = 1.0 / (size - i);
-			Inheritance temp = new Inheritance(this, ratio, false);
+			Inheritance temp = new Inheritance(this, ratio, true);
 			IConsumer current = consumers.get(i);
 			current.inherit(temp);
 		}

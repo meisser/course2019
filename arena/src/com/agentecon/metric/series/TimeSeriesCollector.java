@@ -3,17 +3,20 @@ package com.agentecon.metric.series;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import com.agentecon.agent.IAgent;
 import com.agentecon.consumer.IConsumer;
 import com.agentecon.firm.IFirm;
 import com.agentecon.util.InstantiatingConcurrentHashMap;
+import com.agentecon.util.InstantiatingHashMap;
 
 public class TimeSeriesCollector {
 
 	private Map<String, AveragingTimeSeries> type;
-	private Map<String, TimeSeries> individual;
+	private Map<IndividualKey, AveragingTimeSeries> individual;
 	private AveragingTimeSeries firms, consumers;
 
 	public TimeSeriesCollector(int maxDay) {
@@ -21,21 +24,33 @@ public class TimeSeriesCollector {
 	}
 
 	public TimeSeriesCollector(boolean includeIndividuals, int maxDay) {
-		this.firms = new AveragingTimeSeries("Firms", maxDay);
-		this.consumers = new AveragingTimeSeries("Consumers", maxDay);
+		this(includeIndividuals, maxDay, false);
+	}
+
+	public TimeSeriesCollector(boolean includeIndividuals, int maxDay, boolean integral) {
+		this.firms = integral ? new AggregatingTimeSeries("Firms", maxDay) : new AveragingTimeSeries("Firms", maxDay);
+		this.consumers = integral ? new AggregatingTimeSeries("Consumers", maxDay) : new AveragingTimeSeries("Consumers", maxDay);
 		this.type = new InstantiatingConcurrentHashMap<String, AveragingTimeSeries>() {
 
 			@Override
 			protected AveragingTimeSeries create(String key) {
-				return new AveragingTimeSeries(key, new Line(), maxDay);
+				if (integral) {
+					return new AggregatingTimeSeries(key, maxDay);
+				} else {
+					return new AveragingTimeSeries(key, maxDay);
+				}
 			}
 		};
 		if (includeIndividuals) {
-			this.individual = new InstantiatingConcurrentHashMap<String, TimeSeries>() {
+			this.individual = new InstantiatingConcurrentHashMap<IndividualKey, AveragingTimeSeries>() {
 
 				@Override
-				protected TimeSeries create(String key) {
-					return new TimeSeries(key, maxDay);
+				protected AveragingTimeSeries create(IndividualKey key) {
+					if (integral) {
+						return new AggregatingTimeSeries(key.getName(), maxDay);
+					} else {
+						return new AveragingTimeSeries(key.getName(), maxDay);
+					}
 				}
 			};
 		}
@@ -45,7 +60,7 @@ public class TimeSeriesCollector {
 		record(day, new IAgentType() {
 
 			@Override
-			public String getIndividualKey() {
+			public String getName() {
 				return agent.getName();
 			}
 
@@ -68,8 +83,8 @@ public class TimeSeriesCollector {
 	}
 
 	public void record(int day, IAgentType agent, double number) {
-		if (individual != null && agent.getIndividualKey() != null) {
-			individual.get(agent.getIndividualKey()).set(day, number);
+		if (individual != null && agent.getName() != null) {
+			individual.get(new IndividualKey(agent.getName(), agent.getTypeKeys())).add(number);
 		}
 		for (String t : agent.getTypeKeys()) {
 			type.get(t).add(number);
@@ -83,6 +98,11 @@ public class TimeSeriesCollector {
 	}
 
 	public void reportZeroIfNoData() {
+		if (individual != null) {
+			for (AveragingTimeSeries ts : individual.values()) {
+				ts.pushZeroIfNothing();
+			}
+		}
 		for (AveragingTimeSeries ts : type.values()) {
 			ts.pushZeroIfNothing();
 		}
@@ -91,6 +111,11 @@ public class TimeSeriesCollector {
 	}
 
 	public void flushDay(int day, boolean average) {
+		if (individual != null) {
+			for (AveragingTimeSeries ts : individual.values()) {
+				flush(day, average, ts);
+			}
+		}
 		for (AveragingTimeSeries ts : type.values()) {
 			flush(day, average, ts);
 		}
@@ -105,8 +130,8 @@ public class TimeSeriesCollector {
 			ts.pushSum(day);
 		}
 	}
-	
-	public Collection<TimeSeries> getAggregateTimeSeries(){
+
+	private Collection<TimeSeries> getFirmAndConsumerSeries() {
 		ArrayList<TimeSeries> ts = new ArrayList<>();
 		if (consumers.getTimeSeries().isInteresting()) {
 			ts.add(consumers.getTimeSeries());
@@ -117,11 +142,44 @@ public class TimeSeriesCollector {
 		return ts;
 	}
 
+	public Collection<TimeSeries> createTypeAveragesFromIndividualSeries() {
+		HashMap<String, ArrayList<AveragingTimeSeries>> all = new InstantiatingHashMap<String, ArrayList<AveragingTimeSeries>>() {
+
+			@Override
+			protected ArrayList<AveragingTimeSeries> create(String key) {
+				return new ArrayList<AveragingTimeSeries>();
+			}
+
+		};
+		individual.forEach(new BiConsumer<IndividualKey, AveragingTimeSeries>() {
+
+			@Override
+			public void accept(IndividualKey t, AveragingTimeSeries u) {
+				for (String type : t.getTypeKeys()) {
+					all.get(type).add(u);
+				}
+			}
+		});
+		ArrayList<TimeSeries> aggregates = new ArrayList<TimeSeries>();
+		all.forEach(new BiConsumer<String, ArrayList<AveragingTimeSeries>>() {
+
+			@Override
+			public void accept(String type, ArrayList<AveragingTimeSeries> lists) {
+				TimeSeries ts = new TimeSeries(type, 0);
+				for (AveragingTimeSeries individual : lists) {
+					ts = ts.add(individual.getTimeSeries(), type);
+				}
+				aggregates.add(ts.divideBy(lists.size()));
+			}
+		});
+		return aggregates;
+	}
+
 	public Collection<TimeSeries> getTimeSeries() {
-		Collection<TimeSeries> ts = getAggregateTimeSeries();
+		Collection<TimeSeries> ts = getFirmAndConsumerSeries();
 		ts.addAll(sort(AveragingTimeSeries.unwrap(type.values())));
 		if (individual != null) {
-			ts.addAll(sort(individual.values()));
+			ts.addAll(sort(AveragingTimeSeries.unwrap(individual.values())));
 		}
 		return ts;
 	}
@@ -139,6 +197,41 @@ public class TimeSeriesCollector {
 
 	public Collection<? extends TimeSeries> getTypeTimeSeries() {
 		return sort(AveragingTimeSeries.unwrap(type.values()));
+	}
+
+	class IndividualKey {
+
+		private String key;
+		private String[] types;
+
+		public IndividualKey(String name, String[] typeKeys) {
+			this.key = name;
+			this.types = typeKeys;
+		}
+
+		public String getName() {
+			return key;
+		}
+
+		public String[] getTypeKeys() {
+			return types;
+		}
+
+		@Override
+		public int hashCode() {
+			return key.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			return key.equals(((IndividualKey)o).key);
+		}
+		
+		@Override
+		public String toString() {
+			return key.toString();
+		}
+
 	}
 
 }

@@ -61,7 +61,7 @@ public class MarketMakerStats extends SimStats implements IMarketListener {
 						}
 
 						@Override
-						public String getIndividualKey() {
+						public String getName() {
 							return t.getName();
 						}
 					};

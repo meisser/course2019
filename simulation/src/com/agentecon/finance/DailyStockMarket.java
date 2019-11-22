@@ -115,11 +115,13 @@ public class DailyStockMarket implements IStockMarket {
 		if (marketCapWeight) {
 			return findMarketCapWeightedRandomAsk();
 		} else {
-			return findRandomAsk();
+			Ask ask = getRandomAsk();
+			return ask == null ? null : (Ticker) ask.getGood();
 		}
 	}
-
-	private Ticker findRandomAsk() {
+	
+	@Override
+	public Ask getRandomAsk() {
 		if (marketCache == null) {
 			marketCache = new ArrayList<>(market.size());
 			for (BestPriceMarket bpm : market.values()) {
@@ -134,7 +136,7 @@ public class DailyStockMarket implements IStockMarket {
 			if (ask == null) {
 				marketCache.remove(index);
 			} else {
-				return (Ticker) ask.getGood();
+				return ask;
 			}
 		}
 		return null;

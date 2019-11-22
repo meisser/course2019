@@ -26,7 +26,7 @@ import com.agentecon.sim.ISimulationListener;
 
 public class Agents implements IAgents, IAgentIdGenerator {
 
-	private static final boolean SINGLE_HEIR_MODE = false;
+	private static final boolean SINGLE_HEIR_MODE = true;
 	private static final double DISTRIBUTION_FRACTION = 0.05;
 
 	private long seed;

@@ -146,11 +146,19 @@ public class TimeSeries implements Comparable<TimeSeries> {
 	}
 
 	public int getEnd() {
-		return line.getEnd();
+		if (isInteresting()) {
+			return line.getEnd();
+		} else {
+			return 0;
+		}
 	}
 
 	public int getStart() {
-		return line.getStart();
+		if (isInteresting()) {
+			return line.getStart();
+		} else {
+			return Integer.MAX_VALUE;
+		}
 	}
 
 	private int getStart(ArrayList<Point> p1, int start) {
@@ -197,14 +205,31 @@ public class TimeSeries implements Comparable<TimeSeries> {
 		return ts;
 	}
 
+	public TimeSeries divideBy(double divisor) {
+		TimeSeries ts = new TimeSeries(getName(), max);
+		for (Point p : line.getPoints()) {
+			ts.set(p.x, p.y / divisor);
+		}
+		return ts;
+	}
+
 	public TimeSeries add(TimeSeries other) {
-		TimeSeries ts = new TimeSeries(getName() + " + " + other.getName(), max);
-		if (isInteresting() || other.isInteresting()) {
-			int start = Math.min(getStart(), other.getStart());
-			int end = Math.max(getEnd(), other.getEnd());
-			for (int i = start; i <= end; i++) {
-				ts.set(i, get(i) + other.get(i));
-			}
+		if (isInteresting() && other.isInteresting()) {
+			return add(other, getName() + " + " + other.getName());
+		} else if (other.isInteresting()) {
+			return other;
+		} else {
+			return this;
+		}
+	}
+
+	public TimeSeries add(TimeSeries other, String newName) {
+		int max = Math.max(this.max, other.max);
+		TimeSeries ts = new TimeSeries(newName, max);
+		int start = Math.min(getStart(), other.getStart());
+		int end = Math.max(getEnd(), other.getEnd());
+		for (int i = start; i <= end; i++) {
+			ts.set(i, get(i) + other.get(i));
 		}
 		return ts;
 	}

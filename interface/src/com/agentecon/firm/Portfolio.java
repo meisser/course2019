@@ -61,6 +61,7 @@ public class Portfolio implements Cloneable {
 		for (Position p : other.inv.values()) {
 			Position existing = inv.get(p.getTicker());
 			if (existing == null) {
+				assert p.isConsumerPosition() == consumer;
 				inv.put(p.getTicker(), p);
 			} else {
 				p.dispose(existing);
@@ -82,6 +83,7 @@ public class Portfolio implements Cloneable {
 
 	public void addPosition(Position pos) {
 		if (pos != null) {
+			assert pos.isConsumerPosition() == consumer;
 			Position prev = inv.put(pos.getTicker(), pos);
 			if (prev != null && prev != pos) {
 				prev.dispose(pos);

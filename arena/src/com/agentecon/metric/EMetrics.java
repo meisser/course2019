@@ -16,7 +16,6 @@ import com.agentecon.metric.variants.CashStats;
 import com.agentecon.metric.variants.Demographics;
 import com.agentecon.metric.variants.DividendStats;
 import com.agentecon.metric.variants.Equality;
-import com.agentecon.metric.variants.FirmRanking;
 import com.agentecon.metric.variants.InterestStats;
 import com.agentecon.metric.variants.InventoryStats;
 import com.agentecon.metric.variants.MarketMakerStats;
@@ -25,6 +24,7 @@ import com.agentecon.metric.variants.MonetaryStats;
 import com.agentecon.metric.variants.OwnershipStats;
 import com.agentecon.metric.variants.ProductionDetailStats;
 import com.agentecon.metric.variants.ProductionStats;
+import com.agentecon.metric.variants.ShareholderValueStats;
 import com.agentecon.metric.variants.StockMarketStats;
 import com.agentecon.metric.variants.SynchronizedUtility;
 import com.agentecon.metric.variants.TypeStatistics;
@@ -35,10 +35,8 @@ import com.agentecon.web.query.AgentQuery;
 
 public enum EMetrics {
 	
-	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, RANKING_FIRMS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH_AGG, WEALTH_AVG, TYPE;
+	CASH, DEMOGRAPHICS, TOTAL_DIVIDENDS, AVERAGE_DIVIDENDS, SHAREHOLDER_GAINS, INTEREST, EQUALITY, INVENTORY, MARKET, MARKETMAKER, MONETARY, OWNERSHIP, STOCKMARKET, PRODUCTION, PRODUCTION_DETAILS, RANKING_CONSUMERS, UTILITY, UTILITY_SYNCHRONIZED, WEALTH_AGG, WEALTH_AVG, TYPE;
 	
-//	public static final EMetrics[] ENABLED_METRICS = new EMetrics[] {DEMOGRAPHICS, TYPE, INVENTORY, CASH, TOTAL_DIVIDENDS, INTEREST, PRODUCTION, PRODUCTION_DETAILS, MARKET, MONETARY, UTILITY, UTILITY_SYNCHRONIZED, RANKING_CONSUMERS};
-
 	public static final EMetrics[] ENABLED_METRICS = EMetrics.values();
 
 	public SimStats createAndRegister(ISimulation sim, List<String> list, boolean details) {
@@ -65,17 +63,14 @@ public enum EMetrics {
 			return "Total dividends paid out to free float shareholders (no dividend is paid to firm itself).";
 		case AVERAGE_DIVIDENDS:
 			return "Average dividends paid out to free float shareholders (no dividend is paid to firm itself).";
-//		case DIVIDENDS_TO_CONSUMERS:
-//			return "Daily real dividends paid to consumers. To calculate real dividends, nominal dividends are divided by the price index of the goods market. For firm types, the average over all instances is calculated.";
+		case SHAREHOLDER_GAINS:
+			return "Daily dividends received and capital gains made by consumer shareholders.";
 		case INTEREST:
 			return "Interest rate on money holdings (for simulations with a bank paying interest to consumers).";	
 		case EQUALITY:
 			return "Gini co-efficient for various cohorts over time. A low value implies more equality.";
 		case RANKING_CONSUMERS:
 			return "The average over the exponentially moving average of daily utility. The 'all' variant is used for the ranking.";
-		case RANKING_FIRMS:
-			return "The firm ranking over time.";
-//		case FIRM:
 		case INVENTORY:
 			return "Average amount of goods held by firms and consumers after trading (before consumption and before production).";
 		case MARKET:
@@ -112,14 +107,12 @@ public enum EMetrics {
 			return new DividendStats(sim, false, false, details);
 		case AVERAGE_DIVIDENDS:
 			return new DividendStats(sim, false, true, details);
-//		case DIVIDENDS_TO_CONSUMERS:
-//			return new DividendStats(sim, true, false, details);
+		case SHAREHOLDER_GAINS:
+			return new ShareholderValueStats(sim, false, details);
 		case INTEREST:
 			return new InterestStats(sim);
 		case EQUALITY:
 			return new Equality(sim);
-//		case FIRM:
-//			return new FirmStats(sim);
 		case INVENTORY:
 			return new InventoryStats(sim, details);
 		case MARKET:
@@ -144,16 +137,12 @@ public enum EMetrics {
 			return new StockMarketStats(sim, true, details);
 		case RANKING_CONSUMERS:
 			return new UtilityRanking(sim, true);
-		case RANKING_FIRMS:
-			return new FirmRanking(sim, true);
 		case UTILITY:
 			return new UtilityStats(sim, details);
 		case UTILITY_SYNCHRONIZED:
 			return new SynchronizedUtility(sim, details);
 		case TYPE:
 			return new TypeStatistics(sim);
-//		case VALUATION:
-//			return new ValuationStats(sim);
 		default:
 			return null;
 		}

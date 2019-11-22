@@ -36,7 +36,7 @@ public class OwnershipStats extends SimStats {
 
 					@Override
 					protected TimeSeries create(String key) {
-						return new TimeSeries(key, new Line(), getMaxDay());
+						return new TimeSeries(key, getMaxDay());
 					}
 				};
 			}

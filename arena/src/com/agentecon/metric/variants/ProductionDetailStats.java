@@ -81,7 +81,7 @@ public class ProductionDetailStats extends SimStats {
 						}
 
 						@Override
-						public String getIndividualKey() {
+						public String getName() {
 							return inst.getName();
 						}
 					}, output.getAmount());

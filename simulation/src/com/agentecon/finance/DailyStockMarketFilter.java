@@ -61,6 +61,11 @@ public class DailyStockMarketFilter implements IStockMarket {
 		}
 		return filtered;
 	}
+	
+	@Override
+	public Ask getRandomAsk() {
+		return wrapped.getRandomAsk();
+	}
 
 	public Ticker findAnyAsk(List<Ticker> preferred, boolean marketCapWeight) {
 		return wrapped.findAnyAsk(preferred, marketCapWeight);

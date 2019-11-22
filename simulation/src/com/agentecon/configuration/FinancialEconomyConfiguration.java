@@ -55,7 +55,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	public static final Good LAND = HermitConfiguration.LAND;
 	public static final double START_CAPITAL = 1000;
 
-	protected static final double PRODUCTION_MULTIPLIER = 5.0;
+	protected static final double PRODUCTION_MULTIPLIER = 3.0;
 
 	private static final String FUND = "com.agentecon.fund.InvestmentFund";
 	private static final String TEST_FUND = "com.agentecon.fund.TestInvestmentFund";
@@ -64,13 +64,13 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	private InterestDistribution policy;
 
 	public FinancialEconomyConfiguration(int seed) throws SocketTimeoutException, IOException {
-		super(5000, seed);
+		super(3000, seed);
 		this.policy = new InterestDistribution();
 		IStock[] dailyEndowment = new IStock[] { new Stock(MAN_HOUR, HermitConfiguration.DAILY_ENDOWMENT) };
 		Endowment endowment = new Endowment(getMoney(), new IStock[0], dailyEndowment);
 		createCentralBank();
 		createPopulation(endowment, LIFE_EXPECTANCY);
-		createFarms(10);
+		createFarms(7);
 		addMarketMakers();
 		addBank();
 		boolean remote = SimulationConfig.shouldLoadRemoteTeams();
@@ -84,7 +84,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	}
 
 	private void createPopulation(Endowment endowment, int lifeExpectancy) {
-		addEvent(new ConsumerEvent(lifeExpectancy - 1, endowment, this) {
+		addEvent(new ConsumerEvent(lifeExpectancy / 2, endowment, this) {
 
 			int count = 1;
 
@@ -94,7 +94,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 			}
 
 		});
-		addEvent(new SinConsumerEvent(0, 0, CYCLE_LENGTH, CYCLE_LENGTH) {
+		addEvent(new SinConsumerEvent(0, 0, CYCLE_LENGTH / 2, CYCLE_LENGTH) {
 
 			@Override
 			protected void addConsumer(ICountry sim) {
@@ -203,7 +203,7 @@ public class FinancialEconomyConfiguration extends SimulationConfig implements I
 	}
 
 	private void addInvestmentFunds(IAgentFactory factory, int number) throws IOException {
-		addEvent(new SimEvent(1000, 0, number) {
+		addEvent(new SimEvent(500, 0, number) {
 
 			@Override
 			public void execute(int day, ICountry sim) {

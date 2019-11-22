@@ -22,6 +22,10 @@ public interface IStockMarket extends IPriceMakerMarket, IFinancialMarketData {
 	
 	public IBank getLeverageProvider();
 	
+	public default Ask getRandomAsk() {
+		return getAsk(findAnyAsk(Collections.emptyList(), false));
+	}
+	
 	public Ticker findAnyAsk(List<Ticker> preferred, boolean marketCapWeight);
 	
 	/**

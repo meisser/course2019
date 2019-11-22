@@ -52,7 +52,7 @@ public class TypeStatistics extends SimStats {
 				}
 
 				@Override
-				public String getIndividualKey() {
+				public String getName() {
 					return null;
 				}
 

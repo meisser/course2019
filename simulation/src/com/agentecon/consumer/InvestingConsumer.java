@@ -11,10 +11,9 @@ package com.agentecon.consumer;
 import com.agentecon.agent.Endowment;
 import com.agentecon.agent.IAgentIdGenerator;
 import com.agentecon.exercises.FarmingConfiguration;
-import com.agentecon.finance.stockpicking.EqualWeightStockPickingStrategy;
+import com.agentecon.finance.stockpicking.LimitedSampleYieldPickingStrategy;
 import com.agentecon.firm.IStockMarket;
 import com.agentecon.goods.Good;
-import com.agentecon.goods.IStock;
 import com.agentecon.goods.Inventory;
 import com.agentecon.market.IPriceTakerMarket;
 import com.agentecon.util.Numbers;
@@ -51,17 +50,18 @@ public class InvestingConsumer extends RetiringConsumer {
 			double constantFactor = Numbers.geometricSum(DISCOUNT_RATE, daysToRetirement);
 			double consumption = getDailySpendings();
 			double optimalSavings = (consumption * (daysLeft - 1) - dividends / (1 - DISCOUNT_RATE)) / constantFactor + dividends - consumption;
-			double actualInvestment = getPortfolio().invest(new EqualWeightStockPickingStrategy(), stocks, this, optimalSavings);
+//			double actualInvestment = getPortfolio().invest(new EqualWeightStockPickingStrategy(), stocks, this, optimalSavings);
+			double actualInvestment = getPortfolio().invest(new LimitedSampleYieldPickingStrategy(3), stocks, this, optimalSavings);
 			listeners.notifyInvested(this, actualInvestment); // notify listeners for inflow / outflow statistics
 		}
 	}
 	
 		@Override
 	protected void trade(Inventory inv, IPriceTakerMarket market) {
-		IStock myLand = getStock(FarmingConfiguration.LAND);
-		if (myLand.getAmount() < 10) {
-			market.sellSome(this, getMoney(), myLand);
-		}
+//		IStock myLand = getStock(FarmingConfiguration.LAND);
+//		if (myLand.getAmount() < 10) {
+//			market.sellSome(this, getMoney(), myLand);
+//		}
 		Inventory reducedInv = inv.hideRelative(getMoney().getGood(), CAPITAL_BUFFER);
 		super.workAtLeast(market, MINIMUM_WORKING_HOURS);
 		super.trade(reducedInv, market);

@@ -4,13 +4,7 @@ public interface IRegister {
 	
 	public static final double SHARES_PER_COMPANY = 100;
 	
-	public default Position createPosition() {
-		return createPosition(true);
-	}
-	
-	public default Position createPosition(boolean consumer) {
-		return createPosition();
-	}
+	public Position createPosition(boolean consumer);
 	
 	public default double getLatestDividend() {
 		return getAverageDividend();

@@ -51,7 +51,7 @@ public class WealthStats extends SimStats {
 				}
 
 				@Override
-				public String getIndividualKey() {
+				public String getName() {
 					return a.getName();
 				}
 			}, a.getWealth(stats));

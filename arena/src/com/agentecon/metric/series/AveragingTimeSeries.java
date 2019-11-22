@@ -11,10 +11,6 @@ public class AveragingTimeSeries {
 	public AveragingTimeSeries(String key, int max) {
 		this.series = new TimeSeries(key, max);
 	}
-
-	public AveragingTimeSeries(String key, Line line, int max) {
-		this.series = new TimeSeries(key, line, max);
-	}
 	
 	public void add(double weight, double value) {
 		this.tot += value;

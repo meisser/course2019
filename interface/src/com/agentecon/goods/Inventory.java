@@ -93,7 +93,7 @@ public class Inventory {
 		for (IStock stock : inv.values()) {
 			if (stock.getGood().equals(money)) {
 				value += stock.getAmount();
-			} else {
+			} else if (stock.hasSome()){
 				try {
 					value += stats.getPriceBelief(stock.getQuantity());
 				} catch (PriceUnknownException e) {
