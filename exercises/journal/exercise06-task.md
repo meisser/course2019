@@ -1,7 +1,7 @@
 # Final Exercise - Fund Competition
 
 ## Setting
-The final setting is based on the latest [financial economy setting](http://meissereconomics.com/vis/simulation?sim=financial-economy-fast) that includes a one-time productivity shock and allows leverage. We will slightly adjust the setting before the end of the class but the essentials will stay the same. See also the lecture notes.
+The final setting is based on the latest [financial economy setting](http://meissereconomics.com/vis/simulation?sim=financial-economy-fast) that includes a one-time productivity shock and allows leverage. We will slightly adjust the setting before the end of the class but the essentials will stay the same. See also the lecture notes. To run the setting locally, run the SimulationServer class as usual (located in the Arena project under src/com.agentecon.web).
 
 ## Task
 Try to implement an investment fund with a successful investment strategy. The performance metric is the amount of money consumers made by investing in your fund. This includes dividend payments and realized capital gains, but not the unrealized capital gains when the simulation ends. Note that the length of the simulation might be subject to change. Your goal is to gain interesting and relevant insights by trying out different ideas to maximize the performance metric in competition with the others.
