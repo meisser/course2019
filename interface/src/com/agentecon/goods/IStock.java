@@ -21,6 +21,10 @@ public interface IStock {
 	public default double getNetAmount() {
 		return getAmount();
 	}
+	
+	public default double getCreditUsed() {
+		return 0.0;
+	}
 
 	/**
 	 * Consumes the available stock.

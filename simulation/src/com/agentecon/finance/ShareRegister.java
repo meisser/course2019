@@ -8,6 +8,7 @@ import com.agentecon.firm.IRegister;
 import com.agentecon.firm.IStockMarket;
 import com.agentecon.firm.Position;
 import com.agentecon.firm.Ticker;
+import com.agentecon.goods.Good;
 import com.agentecon.goods.IStock;
 import com.agentecon.goods.Quantity;
 import com.agentecon.market.Bid;
@@ -22,12 +23,12 @@ public class ShareRegister implements IRegister {
 	private MovingAverage dividend;
 	private LinkedList<Position> all;
 
-	public ShareRegister(Ticker ticker, IStock wallet) {
+	public ShareRegister(Ticker ticker, Good money) {
 		this.ticker = ticker;
 		this.all = new LinkedList<>();
 		this.latestDividend = 0.0;
 		this.dividend = new MovingAverage(0.8);
-		this.rootPosition = new Position(this, ticker, wallet.getGood(), SHARES_PER_COMPANY, false);
+		this.rootPosition = new Position(this, ticker, money, SHARES_PER_COMPANY, false);
 		this.all.add(rootPosition);
 	}
 

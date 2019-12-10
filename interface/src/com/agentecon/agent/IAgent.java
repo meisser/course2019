@@ -23,7 +23,7 @@ public interface IAgent extends Cloneable {
 	 * A convenience method to access the money of an agent. Also accessible through its inventory. 
 	 */
 	public IStock getMoney();
-
+	
 	/**
 	 * The inventory of the agent, including its money.
 	 */
@@ -32,7 +32,7 @@ public interface IAgent extends Cloneable {
 	public default double getWealth(IStatistics stats) {
 		double value = getInventory().calculateValue(stats.getGoodsMarketStats());
 		if (this instanceof IShareholder) {
-			value += ((IShareholder)this).getPortfolio().calculateValue(stats.getStockMarketStats());
+			value += ((IShareholder)this).getPortfolio().calculateValue(stats.getStockMarketStats(), true);
 		}
 		return value;
 	}

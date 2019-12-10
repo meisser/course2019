@@ -15,7 +15,7 @@ import com.agentecon.production.PriceUnknownException;
 public class CentralBank extends PortfolioFirm {
 
 	private static final double DISTRIBUTION_FRACTION = 0.2;
-	
+
 	private Good indexGood;
 	private IDistributionPolicy policy;
 
@@ -31,22 +31,26 @@ public class CentralBank extends PortfolioFirm {
 
 	@Override
 	protected double calculateDividends(IStatistics stats) {
-		return 0;
+		return getMoney().getAmount() * 0.01;
 	}
 
 	public void distributeMoney(Collection<IConsumer> consumers, IStatistics stats) {
 		IStock wallet = getMoney();
-//		try {
-//			double price = stats.getGoodsMarketStats().getPriceBelief(indexGood);
-//			double diff = price - 1.0;
-//			if (diff > 0.0) {
-//				wallet.remove(0.5*diff*wallet.getAmount());
-//			} else if (diff < 0.0){
-//				wallet.add(0.5*-diff*wallet.getAmount());
-//			}
-//		} catch (PriceUnknownException e) {
-//		}
-		policy.distribute(wallet.hideRelative(1.0 - DISTRIBUTION_FRACTION), consumers);
+		double distribution = DISTRIBUTION_FRACTION;
+		try {
+			double price = stats.getGoodsMarketStats().getPriceBelief(indexGood);
+			double diff = price - 1.0;
+			double factor = Math.min(0.1, Math.abs(diff));
+			if (diff > 0.0) {
+				wallet.remove(factor * wallet.getAmount());
+				distribution -= factor;
+			} else if (diff < 0.0) {
+				wallet.add(factor * wallet.getAmount());
+				distribution += factor;
+			}
+		} catch (PriceUnknownException e) {
+		}
+		policy.distribute(wallet.hideRelative(1.0 - distribution), consumers);
 	}
 
 }

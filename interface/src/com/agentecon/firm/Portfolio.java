@@ -160,10 +160,7 @@ public class Portfolio implements Cloneable {
 	}
 
 	public double calculateValue(IPriceProvider stats) {
-		double value = wallet.getNetAmount();
-		if (value >= 0.0) {
-			value = 0.0; // no credit, positive amounts are counted in inventory
-		}
+		double value = 0.0;
 		for (IStock stock : inv.values()) {
 			try {
 				value += stats.getPriceBelief(stock.getQuantity());
@@ -171,6 +168,15 @@ public class Portfolio implements Cloneable {
 			}
 		}
 		return value;
+	}
+
+	public double calculateValue(IPriceProvider stats, boolean net) {
+		double value = calculateValue(stats);
+		if (net) {
+			return value;
+		} else {
+			return value - wallet.getCreditUsed();
+		}
 	}
 
 	public Portfolio clone(IStock wallet) {

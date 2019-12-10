@@ -5,7 +5,7 @@ import com.agentecon.goods.IStock;
 import com.agentecon.util.Numbers;
 
 public class CreditAccount extends AbstractStockWrapper {
-	
+
 	private double creditUsed;
 	private double creditLimit;
 
@@ -15,6 +15,10 @@ public class CreditAccount extends AbstractStockWrapper {
 
 	public double getCreditUsed() {
 		return creditUsed;
+	}
+	
+	public double getCreditLimit() {
+		return creditLimit;
 	}
 
 	public void setCreditLimit(double newLimit) {
@@ -85,6 +89,18 @@ public class CreditAccount extends AbstractStockWrapper {
 	public IStock duplicate() {
 		// it is actually not trivial to correctly duplicate this
 		throw new RuntimeException("Not implemented");
+	}
+
+	@Override
+	public String toString() {
+		if (getCreditUsed() == 0.0) {
+			return super.toString();
+		} else if (isLimitExceeded()){
+			double ex = creditUsed - creditLimit;
+			return super.getAmount() + " " + getGood() + " (credit: " + getCreditUsed() + ", limit exceeded by " + ex + ")";
+		} else {
+			return super.getAmount() + " " + getGood() + " (credit: " + getCreditUsed() + ")";
+		}
 	}
 
 }

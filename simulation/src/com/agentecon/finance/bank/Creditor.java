@@ -23,7 +23,7 @@ public class Creditor {
 
 	public void chargeInterestAndUpdateCreditLimit(IStock bankWallet, IMarketStatistics stats, double haircut, double interest) throws CreditorBankruptException {
 		if (owner.get().isAlive()) {
-			double portfolioValue = collateral.calculateValue(stats);
+			double portfolioValue = collateral.calculateValue(stats, false);
 			this.account.setCreditLimit(Double.MAX_VALUE);
 			bankWallet.transfer(this.account, interest * account.getCreditUsed());
 			this.account.setCreditLimit(Math.min(MAX_CREDIT, (1.0 - haircut) * portfolioValue));
