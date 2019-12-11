@@ -59,9 +59,19 @@ public class CreditBank extends Firm implements IBank {
 
 	@Override
 	public CreditAccount openCreditAccount(IAgent owner, Portfolio portfolio, IStock baseWallet) {
+		assert !isCreditor(owner);
 		Creditor creditor = new Creditor(owner, portfolio, baseWallet);
 		creditors.add(creditor);
 		return creditor.getAccount();
+	}
+
+	private boolean isCreditor(IAgent owner) {
+		for (Creditor c: creditors) {
+			if (c.isOwner(owner.getReference())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

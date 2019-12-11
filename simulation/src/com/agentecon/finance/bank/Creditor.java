@@ -46,4 +46,8 @@ public class Creditor {
 	public CreditAccount getAccount() {
 		return account;
 	}
+
+	public boolean isOwner(AgentRef reference) {
+		return owner.equals(reference);
+	}
 }

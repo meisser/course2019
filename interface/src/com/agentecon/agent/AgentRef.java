@@ -18,5 +18,15 @@ public class AgentRef {
 	public IAgent get(){
 		return agent;
 	}
+	
+	@Override
+	public int hashCode() {
+		return agent.getAgentId();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return agent.getAgentId() == ((AgentRef)o).agent.getAgentId();
+	}
 
 }
