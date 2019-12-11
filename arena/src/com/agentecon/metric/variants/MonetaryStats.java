@@ -50,6 +50,12 @@ public class MonetaryStats extends SimStats {
 	@Override
 	public void notifyDayEnded(IStatistics stats) {
 		int day = stats.getDay();
+		
+		double credit = 0.0;
+		for (IBank bank: getAgents().getBanks()) {
+			credit += bank.getOutstandingCredit();
+		}
+		this.credit.set(day, credit);
 
 		double moneySupply = 0.0;
 		for (IAgent a : getAgents().getAgents()) {
@@ -58,13 +64,7 @@ public class MonetaryStats extends SimStats {
 		for (Inheritance pending: getAgents().getPendingInheritances()) {
 			moneySupply += pending.getMoney().getNetAmount();
 		}
-		this.moneySupply.set(day, moneySupply);
-		
-		double credit = 0.0;
-		for (IBank bank: getAgents().getBanks()) {
-			credit += bank.getOutstandingCredit();
-		}
-		this.credit.set(day, credit);
+		this.moneySupply.set(day, moneySupply - credit);
 
 		double transactionVolume = 0.0;
 		transactionVolume += record(day, stats.getGoodsMarketStats());

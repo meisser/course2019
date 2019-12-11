@@ -34,7 +34,7 @@ public abstract class Firm extends Agent implements IFirm {
 	public Firm(IAgentIdGenerator ids, Endowment end) {
 		super(ids, end);
 		this.ticker = new Ticker(getType(), getAgentId());
-		this.register = new ShareRegister(ticker, getDividendWallet());
+		this.register = new ShareRegister(ticker, getMoney().getGood());
 		this.monitor = new FirmListeners();
 	}
 

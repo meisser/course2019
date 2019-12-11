@@ -42,10 +42,10 @@ public class StockMarketStats extends SimStats implements IMarketListener, ICons
 	private boolean includeIndex;
 	private boolean individualStocks;
 
-	public StockMarketStats(ISimulation agents, boolean includeIndex, boolean individualStocks) {
+	public StockMarketStats(ISimulation agents, boolean includeIndex, boolean details) {
 		super(agents);
 		this.includeIndex = includeIndex;
-		this.individualStocks = individualStocks;
+		this.individualStocks = details;
 		this.investments = new AveragingTimeSeries("Inflows", getMaxDay());
 		this.divestments = new AveragingTimeSeries("Outflows", getMaxDay());
 		this.difference = new AveragingTimeSeries("Inflows - Outflows", getMaxDay());
@@ -64,14 +64,16 @@ public class StockMarketStats extends SimStats implements IMarketListener, ICons
 			}
 
 		};
-		this.volumes = new InstantiatingConcurrentHashMap<Good, TimeSeries>() {
+		if (details) {
+			this.volumes = new InstantiatingConcurrentHashMap<Good, TimeSeries>() {
 
-			@Override
-			protected TimeSeries create(Good key) {
-				return new TimeSeries(key.getName(), getMaxDay());
-			}
+				@Override
+				protected TimeSeries create(Good key) {
+					return new TimeSeries(key.getName(), getMaxDay());
+				}
 
-		};
+			};
+		}
 		this.dividendYield = new InstantiatingConcurrentHashMap<Good, TimeSeries>() {
 
 			@Override
@@ -163,7 +165,9 @@ public class StockMarketStats extends SimStats implements IMarketListener, ICons
 			if (ind.hasValue()) {
 				Good sector = e.getKey();
 				prices.get(sector).set(day, ind.getAverage());
-				volumes.get(sector).set(day, ind.getTotWeight());
+				if (volumes != null) {
+					volumes.get(sector).set(day, ind.getTotWeight());
+				}
 			}
 		}
 		for (Map.Entry<Good, Average> e : sectorYields.entrySet()) {
@@ -212,15 +216,6 @@ public class StockMarketStats extends SimStats implements IMarketListener, ICons
 	}
 
 	@Override
-	public Collection<? extends Chart> getCharts() {
-		Chart ch1 = new Chart("Stock Market Prices", "Volume-weighted stock prices for each sector", prices.values());
-		Chart ch2 = new Chart("Stock Market Volumes", "Stock trading volumes of each sector", volumes.values());
-		Chart ch3 = new Chart("Price/Earning Ratios", "P/E ratios by sector", dividendYield.values());
-		Chart ch4 = new Chart("Investment Flows", "Worker investments versus retiree divestments", investments.getTimeSeries(), divestments.getTimeSeries());
-		return Arrays.asList(ch1, ch2, ch3, ch4);
-	}
-
-	@Override
 	public String toString() {
 		return "Sales stats on " + prices.size() + " stocks";
 	}
@@ -231,7 +226,9 @@ public class StockMarketStats extends SimStats implements IMarketListener, ICons
 		list.addAll(TimeSeries.prefix("Price", prices.values()));
 		// ArrayList<TimeSeries> logReturns = TimeSeries.logReturns(list);
 		// list.addAll(logReturns);
-		list.addAll(TimeSeries.prefix("Volume", volumes.values()));
+		if (volumes != null) {
+			list.addAll(TimeSeries.prefix("Volume", volumes.values()));
+		}
 		list.addAll(TimeSeries.prefix("Dividend yield", dividendYield.values()));
 		// if (includeIndex && prices.get(index).isInteresting()) {
 		// list.add(createTotalReturnIndex(prices.get(index), dividendYield.get(index)));

@@ -24,7 +24,7 @@ public class CompactLine extends Line {
 			assert newpoint.x > points.get(points.size() - 1).x;
 			Point prev = points.get(count - 1);
 			Point prevprev = points.get(count - 2);
-			if (prev.isBetween(newpoint, prevprev, agg)) {
+			if ((prev.x - prevprev.x < 50) && prev.isBetween(newpoint, prevprev, agg)) {
 				points.set(count - 1, newpoint); // overwrite prev
 			} else {
 				points.add(newpoint);
